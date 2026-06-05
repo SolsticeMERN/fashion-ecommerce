@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Customer Login & Register | Aura Wear</title>
+  <meta name="description" content="Access your Aura Wear profile, view purchase histories, manage shipping details, and track orders.">
+  <link rel="canonical" href="login.html">
+</head>
+<body>
+
+  <app-header></app-header>
+
+  <main class="container section" style="max-width:550px;">
+    <!-- Tabs Header -->
+    <div class="glass-panel" style="padding:var(--spacing-lg);">
+      <div class="debugger-tabs" style="background:none; margin-bottom:var(--spacing-lg); border-bottom:1px solid var(--border-color);">
+        <div class="debugger-tab active" id="tab-login-trigger" style="font-family:var(--font-sans); font-size:0.95rem; font-weight:600; letter-spacing:0.05em; padding-bottom:var(--spacing-sm);">LOG IN</div>
+        <div class="debugger-tab" id="tab-register-trigger" style="font-family:var(--font-sans); font-size:0.95rem; font-weight:600; letter-spacing:0.05em; padding-bottom:var(--spacing-sm);">CREATE ACCOUNT</div>
+      </div>
+
+      <!-- Tab 1: Login Form -->
+      <div id="form-login-wrap">
+        <h2 style="font-size:1.6rem; margin-bottom:var(--spacing-sm); font-family:var(--font-sans); font-weight:600;">Welcome Back</h2>
+        <p class="text-muted" style="font-size:0.9rem; margin-bottom:var(--spacing-lg);">Sign in to your client account to access order histories.</p>
+        
+        <form id="login-form">
+          <div class="form-group">
+            <label class="form-label" for="login-email">Email Address</label>
+            <input type="email" class="form-input" id="login-email" required autocomplete="email">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="login-password">Password</label>
+            <input type="password" class="form-input" id="login-password" required autocomplete="current-password">
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%; margin-top:var(--spacing-sm);">Sign In</button>
+        </form>
+
+        <div style="margin-top:var(--spacing-xl); padding:var(--spacing-md); border-radius:var(--radius-sm); border:1px dashed var(--border-color); background:rgba(255,255,255,0.02);">
+          <span style="font-size:0.8rem; font-weight:600; display:block; color:var(--accent-gold); margin-bottom:4px; text-transform:uppercase; letter-spacing:0.05em;">Quick Test Credentials</span>
+          <span style="font-size:0.85rem; color:var(--text-secondary); display:block;">Email: <code style="color:#fff; font-weight:bold;">customer@example.com</code></span>
+          <span style="font-size:0.85rem; color:var(--text-secondary); display:block;">Password: <code style="color:#fff; font-weight:bold;">password123</code></span>
+          <button id="fill-test-btn" class="btn btn-dark" style="padding:4px 8px; font-size:0.75rem; margin-top:8px;">Prefill Credentials</button>
+        </div>
+      </div>
+
+      <!-- Tab 2: Register Form -->
+      <div id="form-register-wrap" style="display:none;">
+        <h2 style="font-size:1.6rem; margin-bottom:var(--spacing-sm); font-family:var(--font-sans); font-weight:600;">Create Account</h2>
+        <p class="text-muted" style="font-size:0.9rem; margin-bottom:var(--spacing-lg);">Join Aura Wear to unlock VIP shipping and tracking rewards.</p>
+        
+        <form id="register-form">
+          <div class="form-group">
+            <label class="form-label" for="reg-email">Email Address *</label>
+            <input type="email" class="form-input" id="reg-email" required autocomplete="email">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reg-password">Password *</label>
+            <input type="password" class="form-input" id="reg-password" required autocomplete="new-password" placeholder="At least 6 characters">
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="reg-first-name">First Name *</label>
+              <input type="text" class="form-input" id="reg-first-name" required autocomplete="given-name">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="reg-last-name">Last Name *</label>
+              <input type="text" class="form-input" id="reg-last-name" required autocomplete="family-name">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="reg-phone">Phone Number *</label>
+            <input type="tel" class="form-input" id="reg-phone" required autocomplete="tel" placeholder="+15551234567">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="reg-address">Street Address</label>
+            <input type="text" class="form-input" id="reg-address" autocomplete="street-address">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="reg-city">City</label>
+              <input type="text" class="form-input" id="reg-city" autocomplete="address-level2">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="reg-state">State / Province</label>
+              <input type="text" class="form-input" id="reg-state" autocomplete="address-level1">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="reg-zip">Zip / Postal Code</label>
+              <input type="text" class="form-input" id="reg-zip" autocomplete="postal-code">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="reg-country">Country</label>
+              <select class="form-input" id="reg-country" autocomplete="country">
+                <option value="US">United States</option>
+                <option value="CA">Canada</option>
+                <option value="GB">United Kingdom</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width:100%; margin-top:var(--spacing-md);">Register Client</button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <app-footer></app-footer>
+
+  <script type="module" src="/src/main.js"></script>
+  
+  <script type="module">
+    import { loginCustomer, registerCustomer, getCurrentUser } from './src/js/auth.js';
+    import { trackEvent } from './src/js/tracking.js';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // If already logged in, redirect to dashboard
+      if (getCurrentUser()) {
+        window.location.href = 'dashboard.html';
+        return;
+      }
+
+      setupTabs();
+      setupLoginForm();
+      setupRegisterForm();
+    });
+
+    function setupTabs() {
+      const loginTab = document.querySelector('#tab-login-trigger');
+      const registerTab = document.querySelector('#tab-register-trigger');
+      const loginFormWrap = document.querySelector('#form-login-wrap');
+      const registerFormWrap = document.querySelector('#form-register-wrap');
+
+      loginTab.addEventListener('click', () => {
+        loginTab.classList.add('active');
+        registerTab.classList.remove('active');
+        loginFormWrap.style.display = 'block';
+        registerFormWrap.style.display = 'none';
+      });
+
+      registerTab.addEventListener('click', () => {
+        registerTab.classList.add('active');
+        loginTab.classList.remove('active');
+        registerFormWrap.style.display = 'block';
+        loginFormWrap.style.display = 'none';
+      });
+
+      // Quick test filler helper
+      document.querySelector('#fill-test-btn').addEventListener('click', (e) => {
+        e.preventDefault();
+        document.querySelector('#login-email').value = 'customer@example.com';
+        document.querySelector('#login-password').value = 'password123';
+      });
+    }
+
+    function setupLoginForm() {
+      const form = document.querySelector('#login-form');
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const email = document.querySelector('#login-email').value.trim();
+        const pass = document.querySelector('#login-password').value;
+
+        const res = loginCustomer(email, pass);
+        if (res.success) {
+          window.dispatchEvent(new CustomEvent('show-toast', {
+            detail: { message: `Logged in successfully! Welcome back, ${res.user.customer_first_name}.`, type: 'success' }
+          }));
+
+          // Track Login Event in Data Layer
+          trackEvent('login', {
+            method: 'credentials',
+            customer_type: res.user.customer_type
+          });
+
+          // Redirect to dashboard
+          setTimeout(() => {
+            window.location.href = 'dashboard.html';
+          }, 600);
+        } else {
+          window.dispatchEvent(new CustomEvent('show-toast', {
+            detail: { message: res.message, type: 'error' }
+          }));
+        }
+      });
+    }
+
+    function setupRegisterForm() {
+      const form = document.querySelector('#register-form');
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const pass = document.querySelector('#reg-password').value;
+        if (pass.length < 6) {
+          window.dispatchEvent(new CustomEvent('show-toast', {
+            detail: { message: "Password must be at least 6 characters.", type: 'warning' }
+          }));
+          return;
+        }
+
+        const details = {
+          email: document.querySelector('#reg-email').value.trim(),
+          password: pass,
+          firstName: document.querySelector('#reg-first-name').value.trim(),
+          lastName: document.querySelector('#reg-last-name').value.trim(),
+          phone: document.querySelector('#reg-phone').value.trim(),
+          address: document.querySelector('#reg-address').value.trim(),
+          city: document.querySelector('#reg-city').value.trim(),
+          state: document.querySelector('#reg-state').value.trim(),
+          zip: document.querySelector('#reg-zip').value.trim(),
+          country: document.querySelector('#reg-country').value
+        };
+
+        const res = registerCustomer(details);
+        if (res.success) {
+          window.dispatchEvent(new CustomEvent('show-toast', {
+            detail: { message: "Registered and logged in successfully!", type: 'success' }
+          }));
+
+          // Track Sign Up Event in Data Layer
+          trackEvent('sign_up', {
+            method: 'credentials'
+          });
+
+          // Redirect to dashboard
+          setTimeout(() => {
+            window.location.href = 'dashboard.html';
+          }, 600);
+        } else {
+          window.dispatchEvent(new CustomEvent('show-toast', {
+            detail: { message: res.message, type: 'error' }
+          }));
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>

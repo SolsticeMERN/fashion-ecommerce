@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Your Wishlist | Aura Wear</title>
+  <meta name="description" content="View your saved minimal styles, coordinate your future wardrobe capsule, and add items to your cart.">
+  <link rel="canonical" href="wishlist.html">
+</head>
+<body>
+
+  <app-header></app-header>
+
+  <main class="container section">
+    <div class="section-title-wrap" style="text-align: left; margin-bottom: var(--spacing-xl);">
+      <span class="section-subtitle">Favorites</span>
+      <h1 class="section-title" style="margin-bottom: 0;">Wishlist</h1>
+    </div>
+
+    <!-- Empty Wishlist Placeholder -->
+    <div id="empty-wishlist-layout" style="display:none; text-align:center; padding: var(--spacing-xxl) 0;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:var(--spacing-md); color:var(--text-muted);">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+      </svg>
+      <h2 style="font-family:var(--font-sans); font-size:1.5rem; margin-bottom:var(--spacing-sm);">Your wishlist is empty</h2>
+      <p style="color:var(--text-secondary); margin-bottom:var(--spacing-lg);">Bookmark items you love to save them here.</p>
+      <a href="shop.html" class="btn btn-primary">Discover Trends</a>
+    </div>
+
+    <!-- Wishlist Grid -->
+    <div class="grid grid-4" id="wishlist-grid-container">
+      <!-- Injected dynamically -->
+    </div>
+  </main>
+
+  <app-footer></app-footer>
+
+  <script type="module" src="/src/main.js"></script>
+  
+  <script type="module">
+    import { getWishlist, toggleWishlist, addToCart, isInWishlist } from './src/js/store.js';
+    import { PRODUCTS, getProductById } from './src/js/products.js';
+    import { trackEvent, formatCartItemsToTracking } from './src/js/tracking.js';
+    import { formatCurrency } from './src/js/utils.js';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderWishlistPage();
+
+      window.addEventListener('wishlist-updated', () => {
+        renderWishlistPage();
+      });
+    });
+
+    function renderWishlistPage() {
+      const wishlist = getWishlist();
+      const emptyLayout = document.querySelector('#empty-wishlist-layout');
+      const grid = document.querySelector('#wishlist-grid-container');
+
+      if (wishlist.length === 0) {
+        emptyLayout.style.display = 'block';
+        grid.style.display = 'none';
+        return;
+      }
+
+      emptyLayout.style.display = 'none';
+      grid.style.display = 'grid';
+
+      const items = wishlist.map(id => getProductById(id)).filter(Boolean);
+
+      grid.innerHTML = items.map(product => {
+        const hasSale = product.salePrice !== undefined;
+        
+        return `
+          <div class="product-card" data-id="${product.id}">
+            <div class="product-image-container">
+              ${hasSale ? `<span class="badge badge-sale product-badge">Sale</span>` : ''}
+              <a href="product.html?id=${product.id}">
+                <img class="product-img" src="${product.images[0]}" alt="${product.title}">
+              </a>
+              <button class="wishlist-btn-icon active" data-id="${product.id}" title="Remove from Wishlist">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+              </button>
+              <div class="product-quick-add">
+                <button class="btn btn-primary wishlist-quick-add-btn" data-id="${product.id}" style="width:100%; font-size:0.75rem; padding:0.5rem 1rem;">Add to Cart</button>
+              </div>
+            </div>
+            
+            <div class="product-info">
+              <span class="product-cat">${product.category}</span>
+              <a href="product.html?id=${product.id}">
+                <h3 class="product-name">${product.title}</h3>
+              </a>
+              <div class="product-rating">
+                ${'&#9733;'.repeat(Math.round(product.rating))}${'&#9734;'.repeat(5 - Math.round(product.rating))}
+                <span>(${product.reviewCount})</span>
+              </div>
+              <div class="product-price-wrap">
+                ${hasSale 
+                  ? `<span class="price-sale">${formatCurrency(product.salePrice)}</span><span class="price-original">${formatCurrency(product.price)}</span>` 
+                  : `<span class="price-regular">${formatCurrency(product.price)}</span>`
+                }
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Setup actions
+      setupWishlistInteractions();
+    }
+
+    function setupWishlistInteractions() {
+      const grid = document.querySelector('#wishlist-grid-container');
+
+      grid.querySelectorAll('.wishlist-quick-add-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = parseInt(btn.getAttribute('data-id'));
+          const addedItem = addToCart(id, 1);
+          
+          if (addedItem) {
+            window.dispatchEvent(new CustomEvent('show-toast', {
+              detail: { message: `Added "${addedItem.title}" to cart from wishlist.`, type: 'success' }
+            }));
+
+            // Track add_to_cart event in Data Layer
+            trackEvent('add_to_cart', {
+              currency: 'USD',
+              value: addedItem.price,
+              items: formatCartItemsToTracking([addedItem])
+            });
+          }
+        });
+      });
+
+      grid.querySelectorAll('.wishlist-btn-icon').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = parseInt(btn.getAttribute('data-id'));
+          const isAdded = toggleWishlist(id);
+          const product = PRODUCTS.find(p => p.id === id);
+          
+          if (!isAdded) {
+            window.dispatchEvent(new CustomEvent('show-toast', {
+              detail: { message: `Removed "${product.title}" from wishlist.`, type: 'info' }
+            }));
+          }
+        });
+      });
+    }
+  </script>
+
+</body>
+</html>

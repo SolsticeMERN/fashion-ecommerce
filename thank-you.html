@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Order Confirmed | Aura Wear</title>
+  <meta name="description" content="Thank you for your order. Your minimalist staples are being packed and prepped for shipping.">
+  <link rel="canonical" href="thank-you.html">
+</head>
+<body>
+
+  <app-header></app-header>
+
+  <main class="container section">
+    <div class="thank-you-wrap">
+      <div class="success-icon-wrap">
+        &checkmark;
+      </div>
+      
+      <h1 class="thank-you-title font-display">Thank You</h1>
+      <p class="thank-you-subtitle">Your order has been placed successfully. A confirmation email has been sent to your inbox.</p>
+      
+      <!-- Receipt Invoice Card -->
+      <div class="order-details-box" id="receipt-card">
+        <h3 style="font-family:var(--font-sans); font-size:1.1rem; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:var(--spacing-md); border-bottom:1px solid var(--border-color); padding-bottom:var(--spacing-sm); color:var(--accent-gold);">Receipt Summary</h3>
+        
+        <div class="order-details-row">
+          <span>Order ID:</span>
+          <span id="rec-order-id" style="font-weight:600; font-family:monospace; color:var(--text-primary);">N/A</span>
+        </div>
+        <div class="order-details-row">
+          <span>Transaction ID:</span>
+          <span id="rec-tx-id" style="font-family:monospace;">N/A</span>
+        </div>
+        <div class="order-details-row">
+          <span>Order Date:</span>
+          <span id="rec-date">N/A</span>
+        </div>
+        <div class="order-details-row">
+          <span>Customer Email:</span>
+          <span id="rec-email">N/A</span>
+        </div>
+        <div class="order-details-row">
+          <span>Shipping Tier:</span>
+          <span id="rec-shipping-method">N/A</span>
+        </div>
+        <div class="order-details-row">
+          <span>Payment Method:</span>
+          <span id="rec-payment-method">N/A</span>
+        </div>
+        
+        <!-- Items listing -->
+        <div style="margin-top:var(--spacing-md); border-top:1px solid var(--border-color); padding-top:var(--spacing-md);">
+          <span class="form-label">Purchased Items:</span>
+          <div style="display:flex; flex-direction:column; gap:8px; margin-top:8px;" id="rec-items-list">
+            <!-- Items printed -->
+          </div>
+        </div>
+        
+        <div class="order-details-row" style="margin-top:var(--spacing-md); border-top:1px solid var(--border-color); padding-top:var(--spacing-sm);">
+          <span>Grand Total:</span>
+          <span id="rec-total" style="font-size:1.15rem; color:var(--accent-gold); font-weight:700;">$0.00</span>
+        </div>
+      </div>
+
+      <div class="flex gap-md justify-center">
+        <a href="shop.html" class="btn btn-primary">Continue Shopping</a>
+        <a href="dashboard.html" class="btn btn-secondary">View Order History</a>
+      </div>
+    </div>
+  </main>
+
+  <app-footer></app-footer>
+
+  <script type="module" src="/src/main.js"></script>
+  
+  <script type="module">
+    import { getLastOrder } from './src/js/orders.js';
+    import { trackEvent, formatCartItemsToTracking } from './src/js/tracking.js';
+    import { formatCurrency } from './src/js/utils.js';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const order = getLastOrder();
+      
+      if (!order) {
+        window.location.href = 'index.html';
+        return;
+      }
+
+      // 1. Render receipt info
+      renderReceipt(order);
+
+      // 2. Track purchase (with refresh deduplication!)
+      const trackKey = `purchase_tracked_${order.order_id}`;
+      const alreadyTracked = localStorage.getItem(trackKey);
+      
+      if (!alreadyTracked) {
+        // Build purchase payload
+        const purchasePayload = {
+          transaction_id: order.transaction_id,
+          order_id: order.order_id,
+          currency: order.currency,
+          value: order.value,
+          subtotal: order.subtotal,
+          tax: order.tax,
+          shipping: order.shipping,
+          discount: order.discount || 0,
+          coupon: order.coupon || '',
+          payment_method: order.payment_method,
+          shipping_method: order.shipping_method,
+          item_count: order.item_count,
+          items: order.items.map(item => ({
+            item_id: item.item_id.toString(),
+            item_name: item.item_name,
+            item_brand: item.item_brand,
+            item_category: item.item_category,
+            item_category2: item.item_category2,
+            item_category3: item.item_category3,
+            item_variant: item.item_variant,
+            item_sku: item.item_sku,
+            price: item.price,
+            quantity: item.quantity,
+            currency: 'USD'
+          }))
+        };
+
+        // Track conversion event in Data Layer & CAPI Simulated Stream
+        trackEvent('purchase', purchasePayload);
+        
+        // Mark as tracked to prevent duplicates on refresh
+        localStorage.setItem(trackKey, 'true');
+        
+        // Clear last order cache so refreshing doesn't loop, but we keep it in dashboard orders
+        // Actually we can keep it so they can see receipt details.
+      } else {
+        console.log(`Purchase event for Order ID ${order.order_id} was already tracked. Deduplicating tag.`);
+        
+        // Push a visual notice to show CAPI was deduplicated
+        window.dispatchEvent(new CustomEvent('show-toast', {
+          detail: { message: `Conversion pixel deduplicated for Order ${order.order_id}`, type: 'info' }
+        }));
+      }
+    });
+
+    function renderReceipt(order) {
+      document.querySelector('#rec-order-id').textContent = order.order_id;
+      document.querySelector('#rec-tx-id').textContent = order.transaction_id;
+      document.querySelector('#rec-date').textContent = order.date;
+      document.querySelector('#rec-email').textContent = order.billing.email;
+      document.querySelector('#rec-shipping-method').textContent = order.shipping_method;
+      document.querySelector('#rec-payment-method').textContent = order.payment_method;
+      document.querySelector('#rec-total').textContent = formatCurrency(order.value);
+
+      const itemsContainer = document.querySelector('#rec-items-list');
+      itemsContainer.innerHTML = order.items.map(item => `
+        <div class="flex justify-between" style="font-size:0.85rem; color:var(--text-secondary);">
+          <span>${item.item_name} (${item.item_variant}) &times; ${item.quantity}</span>
+          <span style="font-weight:600; color:var(--text-primary);">${formatCurrency(item.price * item.quantity)}</span>
+        </div>
+      `).join('');
+    }
+  </script>
+
+</body>
+</html>

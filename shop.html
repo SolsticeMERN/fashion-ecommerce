@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Shop Collection | Aura Wear</title>
+  <meta name="description" content="Explore our complete capsule wardrobe catalog. Filter by category, color, or size to find your next minimal piece.">
+  <link rel="canonical" href="shop.html">
+
+  <!-- Breadcrumb Schema Markup -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://aurawear-store.com/index.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Shop",
+          "item": "https://aurawear-store.com/shop.html"
+        }
+      ]
+    }
+  </script>
+</head>
+<body>
+
+  <app-header></app-header>
+
+  <main class="container section">
+    <div class="section-title-wrap" style="text-align: left; margin-bottom: var(--spacing-xl);">
+      <span class="section-subtitle">Catalog</span>
+      <h1 class="section-title" id="shop-page-title" style="margin-bottom: 0;">Shop All Products</h1>
+    </div>
+
+    <div class="shop-layout">
+      <!-- Sidebar Filters Panel -->
+      <aside class="shop-sidebar">
+        <!-- Search bar widget (alternative to header trigger) -->
+        <div class="sidebar-widget">
+          <h4 class="sidebar-widget-title">Search</h4>
+          <form id="sidebar-search-form" style="display:flex; border: 1px solid var(--border-color); border-radius: var(--radius-sm); overflow:hidden;">
+            <input type="text" id="sidebar-search-input" placeholder="Search products..." style="flex-grow:1; padding:0.6rem 0.8rem; font-size:0.85rem; color:#fff; background:var(--bg-tertiary);">
+            <button type="submit" style="color:var(--accent-gold); padding:0 10px; background:var(--bg-tertiary); cursor:pointer;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </button>
+          </form>
+        </div>
+
+        <!-- Category Filter Widget -->
+        <div class="sidebar-widget">
+          <h4 class="sidebar-widget-title">Categories</h4>
+          <ul class="sidebar-list">
+            <li class="sidebar-list-item">
+              <label><input type="checkbox" class="filter-category" value="Women"> Women</label>
+            </li>
+            <li class="sidebar-list-item">
+              <label><input type="checkbox" class="filter-category" value="Men"> Men</label>
+            </li>
+            <li class="sidebar-list-item">
+              <label><input type="checkbox" class="filter-category" value="Accessories"> Accessories</label>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Color Swatch Widget -->
+        <div class="sidebar-widget">
+          <h4 class="sidebar-widget-title">Filter By Color</h4>
+          <div class="swatch-color-list" id="color-filter-list">
+            <!-- Swatches will be generated dynamically -->
+          </div>
+        </div>
+
+        <!-- Size Swatch Widget -->
+        <div class="sidebar-widget">
+          <h4 class="sidebar-widget-title">Filter By Size</h4>
+          <div class="swatch-size-list" id="size-filter-list">
+            <!-- Sizes will be generated dynamically -->
+          </div>
+        </div>
+
+        <!-- Reset Button -->
+        <button class="btn btn-secondary" id="reset-filters-btn" style="width: 100%; padding: 0.6rem 1rem; font-size: 0.8rem;">Clear Filters</button>
+      </aside>
+
+      <!-- Shop Listing Grid Content -->
+      <section>
+        <div class="shop-content-top">
+          <div class="text-muted" style="font-size: 0.9rem;">
+            Showing <span id="results-count" style="font-weight:600; color:var(--text-primary);">0</span> products
+          </div>
+          
+          <div class="flex align-center gap-sm">
+            <label for="shop-sort" class="text-muted" style="font-size: 0.85rem; text-transform:uppercase; letter-spacing:0.05em;">Sort By:</label>
+            <select class="shop-sort-select" id="shop-sort">
+              <option value="featured">Featured</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+              <option value="rating">Average Rating</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-3" id="shop-products-grid">
+          <!-- Populated via Javascript -->
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <app-footer></app-footer>
+
+  <script type="module" src="/src/main.js"></script>
+  
+  <script type="module">
+    import { PRODUCTS } from './src/js/products.js';
+    import { addToCart, toggleWishlist, isInWishlist } from './src/js/store.js';
+    import { trackEvent, formatCartItemsToTracking } from './src/js/tracking.js';
+    import { formatCurrency } from './src/js/utils.js';
+    import { getQueryParams } from './src/js/utils.js';
+
+    // Tracking states
+    let selectedColor = null;
+    let selectedSize = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Build Filter swatches on load
+      buildFilterOptions();
+
+      // 2. Parse URL parameters (e.g. ?category=Women or ?search=trench)
+      parseUrlParameters();
+
+      // 3. Render and bind filters
+      renderShop();
+      setupFilterListeners();
+    });
+
+    function buildFilterOptions() {
+      // Extract all unique colors and sizes
+      const allColors = {};
+      const allSizes = new Set();
+
+      PRODUCTS.forEach(p => {
+        if (p.variants && p.variants.colors) {
+          p.variants.colors.forEach(c => {
+            allColors[c.name] = c.value;
+          });
+        }
+        if (p.variants && p.variants.sizes) {
+          p.variants.sizes.forEach(s => allSizes.add(s));
+        }
+      });
+
+      const colorWrap = document.querySelector('#color-filter-list');
+      const sizeWrap = document.querySelector('#size-filter-list');
+
+      colorWrap.innerHTML = Object.entries(allColors).map(([name, val]) => `
+        <div class="swatch-color" data-color="${name}" style="background-color: ${val};" title="${name}"></div>
+      `).join('');
+
+      sizeWrap.innerHTML = Array.from(allSizes).map(size => `
+        <div class="swatch-size" data-size="${size}">${size}</div>
+      `).join('');
+    }
+
+    function parseUrlParameters() {
+      const params = getQueryParams();
+      
+      if (params.category) {
+        document.querySelectorAll('.filter-category').forEach(cb => {
+          if (cb.value === params.category) {
+            cb.checked = true;
+          }
+        });
+      }
+
+      if (params.search) {
+        document.querySelector('#sidebar-search-input').value = params.search;
+        document.querySelector('#shop-page-title').textContent = `Search: "${params.search}"`;
+      }
+    }
+
+    function getFilteredProducts() {
+      // Get categories
+      const activeCats = Array.from(document.querySelectorAll('.filter-category:checked')).map(cb => cb.value);
+      
+      // Get search query
+      const searchQuery = document.querySelector('#sidebar-search-input').value.trim().toLowerCase();
+
+      // Filter products
+      let list = PRODUCTS.filter(p => {
+        // Category check
+        if (activeCats.length > 0 && !activeCats.includes(p.category)) {
+          return false;
+        }
+
+        // Search check
+        if (searchQuery) {
+          const matchTitle = p.title.toLowerCase().includes(searchQuery);
+          const matchDesc = p.description.toLowerCase().includes(searchQuery);
+          const matchCat = p.category.toLowerCase().includes(searchQuery);
+          const matchTags = p.tags.some(t => t.toLowerCase().includes(searchQuery));
+          if (!matchTitle && !matchDesc && !matchCat && !matchTags) {
+            return false;
+          }
+        }
+
+        // Color check
+        if (selectedColor) {
+          const hasColor = p.variants.colors && p.variants.colors.some(c => c.name === selectedColor);
+          if (!hasColor) return false;
+        }
+
+        // Size check
+        if (selectedSize) {
+          const hasSize = p.variants.sizes && p.variants.sizes.includes(selectedSize);
+          if (!hasSize) return false;
+        }
+
+        return true;
+      });
+
+      // Sorting
+      const sort = document.querySelector('#shop-sort').value;
+      if (sort === 'price-asc') {
+        list.sort((a, b) => (a.salePrice || a.price) - (b.salePrice || b.price));
+      } else if (sort === 'price-desc') {
+        list.sort((a, b) => (b.salePrice || b.price) - (a.salePrice || a.price));
+      } else if (sort === 'rating') {
+        list.sort((a, b) => b.rating - a.rating);
+      }
+
+      return list;
+    }
+
+    function renderShop() {
+      const grid = document.querySelector('#shop-products-grid');
+      const countEl = document.querySelector('#results-count');
+      if (!grid) return;
+
+      const list = getFilteredProducts();
+      countEl.textContent = list.length;
+
+      if (list.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column: 1/-1; text-align: center; padding: var(--spacing-xxl) 0; color: var(--text-muted);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:var(--spacing-md);">
+              <circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line>
+            </svg>
+            <p>No products found matching the selected filters.</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = list.map(product => {
+        const isWish = isInWishlist(product.id);
+        const hasSale = product.salePrice !== undefined;
+        
+        return `
+          <div class="product-card" data-id="${product.id}">
+            <div class="product-image-container">
+              ${hasSale ? `<span class="badge badge-sale product-badge">Sale</span>` : ''}
+              <a href="product.html?id=${product.id}" class="product-link" data-id="${product.id}">
+                <img class="product-img" src="${product.images[0]}" alt="${product.title}">
+              </a>
+              <button class="wishlist-btn-icon ${isWish ? 'active' : ''}" data-id="${product.id}" title="${isWish ? 'Remove from Wishlist' : 'Add to Wishlist'}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="${isWish ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+              </button>
+              <div class="product-quick-add">
+                <button class="btn btn-primary quick-add-btn" data-id="${product.id}" style="width:100%; font-size:0.75rem; padding:0.5rem 1rem;">Quick Add</button>
+              </div>
+            </div>
+            
+            <div class="product-info">
+              <span class="product-cat">${product.category}</span>
+              <a href="product.html?id=${product.id}" class="product-link" data-id="${product.id}">
+                <h3 class="product-name">${product.title}</h3>
+              </a>
+              <div class="product-rating">
+                ${'&#9733;'.repeat(Math.round(product.rating))}${'&#9734;'.repeat(5 - Math.round(product.rating))}
+                <span>(${product.reviewCount})</span>
+              </div>
+              <div class="product-price-wrap">
+                ${hasSale 
+                  ? `<span class="price-sale">${formatCurrency(product.salePrice)}</span><span class="price-original">${formatCurrency(product.price)}</span>` 
+                  : `<span class="price-regular">${formatCurrency(product.price)}</span>`
+                }
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Add event listeners for list item clicks & quick-add
+      setupGridEventHandlers();
+
+      // Track view_item_list in dataLayer
+      trackEvent('view_item_list', {
+        item_list_name: 'Shop Catalog List',
+        items: formatCartItemsToTracking(list.slice(0, 12)) // Track impressions of current visible list (first 12)
+      });
+    }
+
+    function setupGridEventHandlers() {
+      const grid = document.querySelector('#shop-products-grid');
+
+      // Quick add action
+      grid.querySelectorAll('.quick-add-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const id = parseInt(btn.getAttribute('data-id'));
+          const addedItem = addToCart(id, 1);
+          
+          if (addedItem) {
+            window.dispatchEvent(new CustomEvent('show-toast', {
+              detail: { message: `Added "${addedItem.title}" to cart.`, type: 'success' }
+            }));
+
+            // Track add_to_cart event in Data Layer
+            trackEvent('add_to_cart', {
+              currency: 'USD',
+              value: addedItem.price,
+              items: formatCartItemsToTracking([addedItem])
+            });
+          }
+        });
+      });
+
+      // Wishlist toggle action
+      grid.querySelectorAll('.wishlist-btn-icon').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const id = parseInt(btn.getAttribute('data-id'));
+          const isAdded = toggleWishlist(id);
+          const product = PRODUCTS.find(p => p.id === id);
+
+          const svg = btn.querySelector('svg');
+          if (isAdded) {
+            btn.classList.add('active');
+            svg.setAttribute('fill', 'currentColor');
+            window.dispatchEvent(new CustomEvent('show-toast', {
+              detail: { message: `Saved "${product.title}" to wishlist.`, type: 'success' }
+            }));
+
+            trackEvent('add_to_wishlist', {
+              currency: 'USD',
+              value: product.salePrice || product.price,
+              items: formatCartItemsToTracking([{
+                id: product.id,
+                title: product.title,
+                price: product.salePrice || product.price,
+                sku: product.sku,
+                category: product.category,
+                quantity: 1
+              }])
+            });
+          } else {
+            btn.classList.remove('active');
+            svg.setAttribute('fill', 'none');
+            window.dispatchEvent(new CustomEvent('show-toast', {
+              detail: { message: `Removed "${product.title}" from wishlist.`, type: 'info' }
+            }));
+          }
+        });
+      });
+
+      // Product item link click select_item tracking
+      grid.querySelectorAll('.product-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const id = parseInt(link.getAttribute('data-id'));
+          const product = PRODUCTS.find(p => p.id === id);
+
+          // Track select_item in dataLayer
+          trackEvent('select_item', {
+            item_list_name: 'Shop Catalog List',
+            items: formatCartItemsToTracking([product])
+          });
+
+          // Delay slightly to ensure dataLayer event goes through
+          setTimeout(() => {
+            window.location.href = link.getAttribute('href');
+          }, 150);
+        });
+      });
+    }
+
+    function setupFilterListeners() {
+      // Category checkbox click
+      document.querySelectorAll('.filter-category').forEach(cb => {
+        cb.addEventListener('change', () => {
+          renderShop();
+        });
+      });
+
+      // Search forms
+      document.querySelector('#sidebar-search-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const search = document.querySelector('#sidebar-search-input').value.trim();
+        document.querySelector('#shop-page-title').textContent = search ? `Search: "${search}"` : "Shop All Products";
+        
+        // Track Search in dataLayer
+        if (search) {
+          trackEvent('search', { search_term: search });
+        }
+        
+        renderShop();
+      });
+
+      // Color swatches click
+      document.querySelectorAll('.swatch-color').forEach(el => {
+        el.addEventListener('click', () => {
+          const color = el.getAttribute('data-color');
+          if (selectedColor === color) {
+            selectedColor = null;
+            el.classList.remove('active');
+          } else {
+            document.querySelectorAll('.swatch-color').forEach(s => s.classList.remove('active'));
+            selectedColor = color;
+            el.classList.add('active');
+          }
+          renderShop();
+        });
+      });
+
+      // Size swatches click
+      document.querySelectorAll('.swatch-size').forEach(el => {
+        el.addEventListener('click', () => {
+          const size = el.getAttribute('data-size');
+          if (selectedSize === size) {
+            selectedSize = null;
+            el.classList.remove('active');
+          } else {
+            document.querySelectorAll('.swatch-size').forEach(s => s.classList.remove('active'));
+            selectedSize = size;
+            el.classList.add('active');
+          }
+          renderShop();
+        });
+      });
+
+      // Sort select
+      document.querySelector('#shop-sort').addEventListener('change', () => {
+        renderShop();
+      });
+
+      // Reset button
+      document.querySelector('#reset-filters-btn').addEventListener('click', () => {
+        document.querySelectorAll('.filter-category').forEach(cb => cb.checked = false);
+        document.querySelector('#sidebar-search-input').value = '';
+        document.querySelectorAll('.swatch-color').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.swatch-size').forEach(s => s.classList.remove('active'));
+        document.querySelector('#shop-sort').value = 'featured';
+        document.querySelector('#shop-page-title').textContent = "Shop All Products";
+        selectedColor = null;
+        selectedSize = null;
+        renderShop();
+      });
+    }
+  </script>
+
+</body>
+</html>

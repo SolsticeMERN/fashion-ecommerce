@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Aura Wear | Luxury Minimalist Fashion & Apparel</title>
+  <meta name="description" content="Shop premium apparel curated for the modern minimalist. Made from luxury organic fibers with a focus on structured lines and responsible design.">
+  <link rel="canonical" href="index.html">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Aura Wear | Luxury Minimalist Fashion">
+  <meta property="og:description" content="Shop premium apparel curated for the modern minimalist. Made from luxury organic fibers.">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&q=80&w=1200">
+  
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Aura Wear | Luxury Minimalist Fashion">
+  <meta name="twitter:description" content="Shop premium apparel curated for the modern minimalist.">
+  
+  <!-- Structured Schema Markup (Organization Schema) -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Aura Wear",
+      "url": "https://aurawear-store.com",
+      "logo": "https://aurawear-store.com/logo.png",
+      "sameAs": [
+        "https://www.facebook.com/aurawear",
+        "https://www.instagram.com/aurawear"
+      ]
+    }
+  </script>
+</head>
+<body>
+
+  <app-header></app-header>
+
+  <main>
+    <!-- Hero Banner Section -->
+    <section class="hero-section" style="background-image: url('https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&q=80&w=1400');">
+      <div class="hero-overlay"></div>
+      <div class="container hero-content">
+        <h1 class="hero-title">Refined Lines.<br>Luxury Restraint.</h1>
+        <p class="hero-desc">Discover our Summer Capsule collection. Structured shapes crafted from Italian linen, organic silk, and raw cashmere.</p>
+        <div class="flex gap-md">
+          <a href="shop.html" class="btn btn-primary" id="hero-cta">Shop The Collection</a>
+          <a href="about.html" class="btn btn-secondary">Our Story</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trust Features Section -->
+    <section class="section" style="background-color: var(--bg-secondary); border-bottom: 1px solid var(--border-color); padding: var(--spacing-xl) 0;">
+      <div class="container flex justify-between flex-wrap gap-lg text-center" style="font-size:0.9rem;">
+        <div class="flex align-center gap-sm" style="flex:1; min-width:200px; justify-content:center;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle>
+          </svg>
+          <div>
+            <span style="font-weight:600; display:block;">Complimentary Shipping</span>
+            <span class="text-muted" style="font-size:0.8rem;">On orders above $150</span>
+          </div>
+        </div>
+        <div class="flex align-center gap-sm" style="flex:1; min-width:200px; justify-content:center;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+          </svg>
+          <div>
+            <span style="font-weight:600; display:block;">Cash on Delivery (COD)</span>
+            <span class="text-muted" style="font-size:0.8rem;">Inspect items upon arrival</span>
+          </div>
+        </div>
+        <div class="flex align-center gap-sm" style="flex:1; min-width:200px; justify-content:center;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+          <div>
+            <span style="font-weight:600; display:block;">Secure Checkout</span>
+            <span class="text-muted" style="font-size:0.8rem;">Encrypted payment security</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Editorial Banners Section -->
+    <section class="section">
+      <div class="container">
+        <div class="promo-banners-grid">
+          <div class="promo-banner" id="promo-banner-women" style="cursor:pointer;" data-promo-id="promo_women_summer_2026" data-promo-name="Women Summer Capsule">
+            <img class="promo-banner-img" src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80&w=600" alt="Women Capsule">
+            <div class="promo-banner-content">
+              <span class="section-subtitle" style="color:var(--accent-gold);">Collection</span>
+              <h3 class="promo-banner-title">Women's Edit</h3>
+              <a href="shop.html?category=Women" class="btn btn-outline" style="padding:0.6rem 1.5rem; font-size:0.75rem;">Explore</a>
+            </div>
+          </div>
+          
+          <div class="promo-banner" id="promo-banner-men" style="cursor:pointer;" data-promo-id="promo_men_minimalist_2026" data-promo-name="Men Minimalist Tailoring">
+            <img class="promo-banner-img" src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&q=80&w=600" alt="Men Capsule">
+            <div class="promo-banner-content">
+              <span class="section-subtitle" style="color:var(--accent-gold);">New Season</span>
+              <h3 class="promo-banner-title">Men's Capsule</h3>
+              <a href="shop.html?category=Men" class="btn btn-outline" style="padding:0.6rem 1.5rem; font-size:0.75rem;">Discover</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Category Circles Section -->
+    <section class="section" style="background-color: var(--bg-secondary); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
+      <div class="container">
+        <div class="section-title-wrap">
+          <span class="section-subtitle">Shop By Category</span>
+          <h2 class="section-title" style="font-size:2rem;">The Capsule Wardrobe</h2>
+        </div>
+        
+        <div class="category-circle-grid">
+          <div class="category-circle-item" onclick="window.location.href='shop.html?category=Women'">
+            <div class="category-circle-img-wrap">
+              <img class="category-circle-img" src="https://images.unsplash.com/photo-1485968579580-b6d095142e6e?auto=format&fit=crop&q=80&w=300" alt="Women">
+            </div>
+            <span class="category-circle-name">Women</span>
+          </div>
+          
+          <div class="category-circle-item" onclick="window.location.href='shop.html?category=Men'">
+            <div class="category-circle-img-wrap">
+              <img class="category-circle-img" src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&q=80&w=300" alt="Men">
+            </div>
+            <span class="category-circle-name">Men</span>
+          </div>
+          
+          <div class="category-circle-item" onclick="window.location.href='shop.html?category=Accessories'">
+            <div class="category-circle-img-wrap">
+              <img class="category-circle-img" src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80&w=300" alt="Accessories">
+            </div>
+            <span class="category-circle-name">Accessories</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trending Products Grid -->
+    <section class="section">
+      <div class="container">
+        <div class="section-title-wrap">
+          <span class="section-subtitle">Highly Coveted</span>
+          <h2 class="section-title">Trending Styles</h2>
+        </div>
+        
+        <div class="grid grid-4" id="trending-grid">
+          <!-- Populated via Javascript -->
+        </div>
+        
+        <div class="text-center" style="margin-top:var(--spacing-xl);">
+          <a href="shop.html" class="btn btn-secondary">View All Products</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <app-footer></app-footer>
+
+  <script type="module" src="/src/main.js"></script>
+  
+  <script type="module">
+    import { PRODUCTS } from './src/js/products.js';
+    import { addToCart, toggleWishlist, isInWishlist } from './src/js/store.js';
+    import { trackEvent, formatCartItemsToTracking } from './src/js/tracking.js';
+    import { formatCurrency } from './src/js/utils.js';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Render Trending Products (First 4 items)
+      renderTrending();
+
+      // 2. Track Promotion Impressions
+      trackPromotionImpressions();
+
+      // 3. Setup Promotion Click Tracking
+      setupPromoClickTracking();
+    });
+
+    function renderTrending() {
+      const grid = document.querySelector('#trending-grid');
+      if (!grid) return;
+
+      // Filter first 4 products
+      const trending = PRODUCTS.slice(0, 4);
+
+      grid.innerHTML = trending.map(product => {
+        const isWish = isInWishlist(product.id);
+        const hasSale = product.salePrice !== undefined;
+        
+        return `
+          <div class="product-card" data-id="${product.id}">
+            <div class="product-image-container">
+              ${hasSale ? `<span class="badge badge-sale product-badge">Sale</span>` : ''}
+              <a href="product.html?id=${product.id}">
+                <img class="product-img" src="${product.images[0]}" alt="${product.title}">
+              </a>
+              <button class="wishlist-btn-icon ${isWish ? 'active' : ''}" data-id="${product.id}" title="${isWish ? 'Remove from Wishlist' : 'Add to Wishlist'}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="${isWish ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+              </button>
+              <div class="product-quick-add">
+                <button class="btn btn-primary quick-add-btn" data-id="${product.id}" style="width:100%; font-size:0.75rem; padding:0.5rem 1rem;">Quick Add</button>
+              </div>
+            </div>
+            
+            <div class="product-info">
+              <span class="product-cat">${product.category}</span>
+              <a href="product.html?id=${product.id}">
+                <h3 class="product-name">${product.title}</h3>
+              </a>
+              <div class="product-rating">
+                ${'&#9733;'.repeat(Math.round(product.rating))}${'&#9734;'.repeat(5 - Math.round(product.rating))}
+                <span>(${product.reviewCount})</span>
+              </div>
+              <div class="product-price-wrap">
+                ${hasSale 
+                  ? `<span class="price-sale">${formatCurrency(product.salePrice)}</span><span class="price-original">${formatCurrency(product.price)}</span>` 
+                  : `<span class="price-regular">${formatCurrency(product.price)}</span>`
+                }
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Add event listeners for buttons
+      grid.querySelectorAll('.quick-add-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const id = parseInt(btn.getAttribute('data-id'));
+          const addedItem = addToCart(id, 1);
+          
+          if (addedItem) {
+            window.dispatchEvent(new CustomEvent('show-toast', {
+              detail: { message: `Added "${addedItem.title}" to cart.`, type: 'success' }
+            }));
+
+            // Track add_to_cart event in Data Layer
+            trackEvent('add_to_cart', {
+              currency: 'USD',
+              value: addedItem.price,
+              items: formatCartItemsToTracking([addedItem])
+            });
+          }
+        });
+      });
+
+      grid.querySelectorAll('.wishlist-btn-icon').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const id = parseInt(btn.getAttribute('data-id'));
+          const isAdded = toggleWishlist(id);
+          const product = PRODUCTS.find(p => p.id === id);
+
+          const svg = btn.querySelector('svg');
+          if (isAdded) {
+            btn.classList.add('active');
+            svg.setAttribute('fill', 'currentColor');
+            window.dispatchEvent(new CustomEvent('show-toast', {
+              detail: { message: `Saved "${product.title}" to wishlist.`, type: 'success' }
+            }));
+
+            // Track add_to_wishlist
+            trackEvent('add_to_wishlist', {
+              currency: 'USD',
+              value: product.salePrice || product.price,
+              items: formatCartItemsToTracking([{
+                id: product.id,
+                title: product.title,
+                price: product.salePrice || product.price,
+                sku: product.sku,
+                category: product.category,
+                quantity: 1
+              }])
+            });
+          } else {
+            btn.classList.remove('active');
+            svg.setAttribute('fill', 'none');
+            window.dispatchEvent(new CustomEvent('show-toast', {
+              detail: { message: `Removed "${product.title}" from wishlist.`, type: 'info' }
+            }));
+          }
+        });
+      });
+    }
+
+    function trackPromotionImpressions() {
+      // Find all promotional banners
+      const banners = document.querySelectorAll('.promo-banner');
+      const promotions = Array.from(banners).map((banner, index) => ({
+        promotion_id: banner.getAttribute('data-promo-id'),
+        promotion_name: banner.getAttribute('data-promo-name'),
+        creative_name: banner.querySelector('img').getAttribute('alt'),
+        creative_slot: `slot_${index + 1}`
+      }));
+
+      if (promotions.length > 0) {
+        // Track view_promotion
+        trackEvent('view_promotion', { promotions });
+      }
+    }
+
+    function setupPromoClickTracking() {
+      const banners = document.querySelectorAll('.promo-banner');
+      banners.forEach((banner, index) => {
+        banner.addEventListener('click', (e) => {
+          // If clicked the actual link button, let it redirect, but track click first
+          const promoId = banner.getAttribute('data-promo-id');
+          const promoName = banner.getAttribute('data-promo-name');
+          const creative = banner.querySelector('img').getAttribute('alt');
+          
+          trackEvent('select_promotion', {
+            promotions: [
+              {
+                promotion_id: promoId,
+                promotion_name: promoName,
+                creative_name: creative,
+                creative_slot: `slot_${index + 1}`
+              }
+            ]
+          });
+          
+          // Small delay for tracking push before redirecting if clicking the card body
+          if (e.target.tagName !== 'A') {
+            const link = banner.querySelector('a').getAttribute('href');
+            setTimeout(() => {
+              window.location.href = link;
+            }, 150);
+          }
+        });
+      });
+    }
+  </script>
+
+</body>
+</html>

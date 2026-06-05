@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Frequently Asked Questions | Aura Wear</title>
+  <meta name="description" content="Find answers to common questions about shipping fees, returns policies, payments security, and sizes.">
+  <link rel="canonical" href="faq.html">
+</head>
+<body>
+
+  <app-header></app-header>
+
+  <main class="container section">
+    <div class="section-title-wrap" style="text-align: center; margin-bottom: var(--spacing-xxl);">
+      <span class="section-subtitle">Help Center</span>
+      <h1 class="section-title" style="font-size:3rem;">Frequently Asked Questions</h1>
+    </div>
+
+    <div class="faq-accordion">
+      <div class="faq-item">
+        <div class="faq-question">
+          <span>What materials do you use in your products?</span>
+          <span class="faq-icon">&#9662;</span>
+        </div>
+        <div class="faq-answer">
+          We use 100% organic cotton, extra-fine merino wool, premium mulberry silk, and natural flax linen. We avoid synthetic blends (like polyester or nylon) to ensure maximum breathability, natural drape, and environmental responsibility.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <span>How do I track my order?</span>
+          <span class="faq-icon">&#9662;</span>
+        </div>
+        <div class="faq-answer">
+          Once your package is shipped, you will receive a tracking link via email. You can also view active order statuses directly inside your Customer Dashboard under the "Order History" tab.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <span>Do you support Cash on Delivery (COD)?</span>
+          <span class="faq-icon">&#9662;</span>
+        </div>
+        <div class="faq-answer">
+          Yes! We support Cash on Delivery (COD) for all retail shipments, allowing you to pay in cash only after receiving and inspecting the package contents.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <span>What is your return policy?</span>
+          <span class="faq-icon">&#9662;</span>
+        </div>
+        <div class="faq-answer">
+          We offer a complimentary 30-day return policy for all unworn garments with original tags attached. Please visit our Returns & Refunds page or contact care@aurawear-store.com to request a shipping label.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <span>Do you ship internationally?</span>
+          <span class="faq-icon">&#9662;</span>
+        </div>
+        <div class="faq-answer">
+          Currently, we ship to the United States, Canada, and the United Kingdom. Standard international shipping fees are calculated during checkout.
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <app-footer></app-footer>
+
+  <script type="module" src="/src/main.js"></script>
+  
+  <script type="module">
+    document.addEventListener('DOMContentLoaded', () => {
+      const faqItems = document.querySelectorAll('.faq-item');
+      
+      faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        question.addEventListener('click', () => {
+          // Toggle active state
+          const isActive = item.classList.contains('active');
+          
+          faqItems.forEach(i => i.classList.remove('active'));
+          
+          if (!isActive) {
+            item.classList.add('active');
+          }
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Secure Checkout | Aura Wear</title>
+  <meta name="description" content="Securely complete your minimalist capsule purchase. Choose shipping speed and payment options.">
+  <link rel="canonical" href="checkout.html">
+</head>
+<body>
+
+  <app-header></app-header>
+
+  <main class="container section">
+    <div class="section-title-wrap" style="text-align: left; margin-bottom: var(--spacing-xl);">
+      <span class="section-subtitle">Secure</span>
+      <h1 class="section-title" style="margin-bottom: 0;">Checkout</h1>
+    </div>
+
+    <div class="checkout-layout" id="checkout-container">
+      <!-- Left: 3 Funnel Steps -->
+      <div>
+        <form id="checkout-form">
+          <!-- Step 1: Customer Info & Shipping Address -->
+          <div class="checkout-step-card" id="step-1-card">
+            <h3 class="checkout-step-title">
+              <span class="checkout-step-number">1</span>
+              Shipping Address
+            </h3>
+            
+            <div class="form-group">
+              <label class="form-label" for="ship-email">Email Address *</label>
+              <input type="email" class="form-input" id="ship-email" required autocomplete="email">
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="ship-first-name">First Name *</label>
+                <input type="text" class="form-input" id="ship-first-name" required autocomplete="given-name">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="ship-last-name">Last Name *</label>
+                <input type="text" class="form-input" id="ship-last-name" required autocomplete="family-name">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="ship-phone">Phone Number *</label>
+              <input type="tel" class="form-input" id="ship-phone" required autocomplete="tel" placeholder="+1234567890">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="ship-address">Street Address *</label>
+              <input type="text" class="form-input" id="ship-address" required autocomplete="street-address">
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="ship-city">City *</label>
+                <input type="text" class="form-input" id="ship-city" required autocomplete="address-level2">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="ship-state">State / Province *</label>
+                <input type="text" class="form-input" id="ship-state" required autocomplete="address-level1">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="ship-zip">Zip / Postal Code *</label>
+                <input type="text" class="form-input" id="ship-zip" required autocomplete="postal-code">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="ship-country">Country *</label>
+                <select class="form-input" id="ship-country" required autocomplete="country">
+                  <option value="US">United States</option>
+                  <option value="CA">Canada</option>
+                  <option value="GB">United Kingdom</option>
+                  <option value="AU">Australia</option>
+                </select>
+              </div>
+            </div>
+            
+            <button type="button" class="btn btn-primary" id="btn-to-step-2" style="width:100%; margin-top:var(--spacing-sm);">Continue to Shipping</button>
+          </div>
+
+          <!-- Step 2: Shipping Method -->
+          <div class="checkout-step-card" id="step-2-card" style="opacity: 0.5; pointer-events: none;">
+            <h3 class="checkout-step-title">
+              <span class="checkout-step-number">2</span>
+              Shipping Method
+            </h3>
+            
+            <div class="shipping-method-option active" data-method="standard" data-price="15">
+              <div class="shipping-option-left">
+                <input type="radio" name="ship-method" id="ship-std" value="Standard" checked>
+                <div>
+                  <span style="font-weight:600; display:block;">Standard Delivery</span>
+                  <span class="text-muted" style="font-size:0.8rem;">Arrives in 3-5 business days</span>
+                </div>
+              </div>
+              <span style="font-weight:600;" id="std-shipping-price">$15.00</span>
+            </div>
+
+            <div class="shipping-method-option" data-method="express" data-price="25">
+              <div class="shipping-option-left">
+                <input type="radio" name="ship-method" id="ship-exp" value="Express">
+                <div>
+                  <span style="font-weight:600; display:block;">Express Courier</span>
+                  <span class="text-muted" style="font-size:0.8rem;">Arrives in 1-2 business days</span>
+                </div>
+              </div>
+              <span style="font-weight:600;">$25.00</span>
+            </div>
+            
+            <button type="button" class="btn btn-primary" id="btn-to-step-3" style="width:100%; margin-top:var(--spacing-sm);">Continue to Payment</button>
+          </div>
+
+          <!-- Step 3: Payment Options -->
+          <div class="checkout-step-card" id="step-3-card" style="opacity: 0.5; pointer-events: none;">
+            <h3 class="checkout-step-title">
+              <span class="checkout-step-number">3</span>
+              Payment Method
+            </h3>
+
+            <div class="payment-method-option active" data-method="COD">
+              <div class="payment-option-left">
+                <input type="radio" name="payment-method" id="pay-cod" value="Cash on Delivery" checked>
+                <div>
+                  <span style="font-weight:600; display:block;">Cash on Delivery (COD)</span>
+                  <span class="text-muted" style="font-size:0.8rem;">Pay cash upon packet inspection</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="payment-method-option" data-method="card">
+              <div class="payment-option-left">
+                <input type="radio" name="payment-method" id="pay-card" value="Online Card">
+                <div>
+                  <span style="font-weight:600; display:block;">Mock Credit Card Payment</span>
+                  <span class="text-muted" style="font-size:0.8rem;">Simulated Visa / Mastercard gateway</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Simulated Credit Card Details block -->
+            <div id="mock-card-details-block" style="display:none; margin-top:var(--spacing-md); border-top:1px solid var(--border-color); padding-top:var(--spacing-md);">
+              <div class="form-group">
+                <label class="form-label" for="card-num">Card Number</label>
+                <input type="text" class="form-input" id="card-num" placeholder="4111 2222 3333 4444" pattern="[0-9\\s]{13,19}">
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="card-exp">Expiry Date</label>
+                  <input type="text" class="form-input" id="card-exp" placeholder="MM/YY">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="card-cvc">CVC Code</label>
+                  <input type="text" class="form-input" id="card-cvc" placeholder="321">
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="btn-place-order" style="width:100%; margin-top:var(--spacing-lg); font-size:1rem; padding:1.1rem var(--spacing-xl);">Place Order</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Right: Summary overview -->
+      <aside>
+        <div class="cart-summary-card">
+          <h3 class="summary-title" style="margin-bottom:var(--spacing-md);">Order Summary</h3>
+          
+          <!-- Items lines list -->
+          <div style="max-height:220px; overflow-y:auto; display:flex; flex-direction:column; gap:var(--spacing-sm); margin-bottom:var(--spacing-md); border-bottom:1px solid var(--border-color); padding-bottom:var(--spacing-md);" id="checkout-summary-items">
+            <!-- Items injected dynamically -->
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:var(--spacing-sm); border-bottom:1px solid var(--border-color); padding-bottom:var(--spacing-md);">
+            <div class="summary-row">
+              <span>Subtotal:</span>
+              <span id="chk-subtotal">$0.00</span>
+            </div>
+            <div class="summary-row" id="chk-discount-row" style="display:none; color:var(--color-success);">
+              <span>Discount:</span>
+              <span id="chk-discount">-$0.00</span>
+            </div>
+            <div class="summary-row">
+              <span>Shipping Fee:</span>
+              <span id="chk-shipping">$0.00</span>
+            </div>
+            <div class="summary-row">
+              <span>Sales Tax (5%):</span>
+              <span id="chk-tax">$0.00</span>
+            </div>
+          </div>
+
+          <div class="summary-row total" style="border-top:none; padding-top:0;">
+            <span>Order Total:</span>
+            <span id="chk-total">$0.00</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <app-footer></app-footer>
+
+  <script type="module" src="/src/main.js"></script>
+  
+  <script type="module">
+    import { getCart, getCartTotals } from './src/js/store.js';
+    import { getCurrentUser } from './src/js/auth.js';
+    import { placeOrder } from './src/js/orders.js';
+    import { trackEvent, formatCartItemsToTracking } from './src/js/tracking.js';
+    import { formatCurrency } from './src/js/utils.js';
+
+    let selectedShipMethod = 'standard';
+    let selectedPayMethod = 'COD';
+    let stdShippingRate = 15;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const cart = getCart();
+      if (cart.length === 0) {
+        window.location.href = 'cart.html';
+        return;
+      }
+
+      // 1. Autofill fields if logged in
+      autofillCustomerFields();
+
+      // 2. Render summary list
+      renderCheckoutSummary();
+
+      // 3. Bind navigation clicks
+      setupFunnelNavs();
+
+      // 4. Submit order
+      setupSubmitHandler();
+
+      // 5. Track begin_checkout event in dataLayer
+      const totals = getCartTotals();
+      trackEvent('begin_checkout', {
+        currency: 'USD',
+        value: totals.total,
+        items: formatCartItemsToTracking(cart)
+      });
+    });
+
+    function autofillCustomerFields() {
+      const user = getCurrentUser();
+      if (!user) return;
+
+      document.querySelector('#ship-email').value = user.customer_email || '';
+      document.querySelector('#ship-first-name').value = user.customer_first_name || '';
+      document.querySelector('#ship-last-name').value = user.customer_last_name || '';
+      document.querySelector('#ship-phone').value = user.customer_phone || '';
+      document.querySelector('#ship-address').value = user.customer_address || '';
+      document.querySelector('#ship-city').value = user.customer_city || '';
+      document.querySelector('#ship-state').value = user.customer_state || '';
+      document.querySelector('#ship-zip').value = user.customer_postal_code || '';
+      document.querySelector('#ship-country').value = user.customer_country || 'US';
+    }
+
+    function renderCheckoutSummary() {
+      const cart = getCart();
+      
+      const container = document.querySelector('#checkout-summary-items');
+      container.innerHTML = cart.map(item => `
+        <div style="display:flex; gap:10px; align-items:center; font-size:0.85rem;">
+          <img src="${item.image}" style="width:40px; height:50px; object-fit:cover; border-radius:var(--radius-sm); border:1px solid var(--border-color);">
+          <div style="flex-grow:1;">
+            <div style="font-weight:600; text-overflow:ellipsis; white-space:nowrap; overflow:hidden; max-width:180px;">${item.title}</div>
+            <div class="text-muted" style="font-size:0.75rem;">${item.color} / ${item.size} &times; ${item.quantity}</div>
+          </div>
+          <span style="font-weight:600;">${formatCurrency(item.price * item.quantity)}</span>
+        </div>
+      `).join('');
+
+      updateTotalsDisplay();
+    }
+
+    function updateTotalsDisplay() {
+      const cart = getCart();
+      const baseTotals = getCartTotals();
+      
+      // Override shipping fee based on selected shipping method
+      let shippingPrice = 0;
+      
+      // Standard is free if subtotal - discount >= 150 or coupon
+      // Otherwise it is $15
+      if (selectedShipMethod === 'standard') {
+        shippingPrice = baseTotals.shipping; // Reads calculator from store
+      } else {
+        shippingPrice = 25; // Express Courier flat
+      }
+
+      // Re-calculate total based on shipping override
+      const taxable = Math.max(0, baseTotals.subtotal - baseTotals.discount);
+      const orderTotal = taxable + baseTotals.tax + shippingPrice;
+
+      // Update Standard Shipping labels in UI
+      const stdShipLabel = document.querySelector('#std-shipping-price');
+      if (stdShipLabel) {
+        stdShipLabel.textContent = baseTotals.shipping === 0 ? "FREE" : "$15.00";
+      }
+
+      document.querySelector('#chk-subtotal').textContent = formatCurrency(baseTotals.subtotal);
+      document.querySelector('#chk-shipping').textContent = shippingPrice === 0 ? "FREE" : formatCurrency(shippingPrice);
+      document.querySelector('#chk-tax').textContent = formatCurrency(baseTotals.tax);
+      document.querySelector('#chk-total').textContent = formatCurrency(orderTotal);
+
+      const discRow = document.querySelector('#chk-discount-row');
+      const discVal = document.querySelector('#chk-discount');
+      if (baseTotals.discount > 0) {
+        discVal.textContent = `-${formatCurrency(baseTotals.discount)}`;
+        discRow.style.display = 'flex';
+      } else {
+        discRow.style.display = 'none';
+      }
+    }
+
+    function setupFunnelNavs() {
+      // Step 1 Continue
+      document.querySelector('#btn-to-step-2').addEventListener('click', () => {
+        // Validate shipping fields
+        const email = document.querySelector('#ship-email');
+        const fn = document.querySelector('#ship-first-name');
+        const ln = document.querySelector('#ship-last-name');
+        const tel = document.querySelector('#ship-phone');
+        const addr = document.querySelector('#ship-address');
+        const city = document.querySelector('#ship-city');
+        const state = document.querySelector('#ship-state');
+        const zip = document.querySelector('#ship-zip');
+
+        if (!email.reportValidity() || !fn.reportValidity() || !ln.reportValidity() || !tel.reportValidity() || !addr.reportValidity() || !city.reportValidity() || !state.reportValidity() || !zip.reportValidity()) {
+          return;
+        }
+
+        // Enable Step 2, collapse/disable Step 1
+        const card1 = document.querySelector('#step-1-card');
+        const card2 = document.querySelector('#step-2-card');
+        card1.style.opacity = '0.7';
+        card2.style.opacity = '1';
+        card2.style.pointerEvents = 'auto';
+
+        // Track add_shipping_info in Data Layer
+        const cart = getCart();
+        const totals = getCartTotals();
+        trackEvent('add_shipping_info', {
+          currency: 'USD',
+          value: totals.total,
+          shipping_tier: selectedShipMethod === 'standard' ? 'Standard Delivery' : 'Express Courier',
+          items: formatCartItemsToTracking(cart)
+        });
+
+        // Smooth scroll to Step 2
+        card2.scrollIntoView({ behavior: 'smooth' });
+      });
+
+      // Step 2 Click choices
+      const shipOptions = document.querySelectorAll('.shipping-method-option');
+      shipOptions.forEach(opt => {
+        opt.addEventListener('click', () => {
+          shipOptions.forEach(o => o.classList.remove('active'));
+          opt.classList.add('active');
+          opt.querySelector('input[type="radio"]').checked = true;
+          selectedShipMethod = opt.getAttribute('data-method');
+          updateTotalsDisplay();
+        });
+      });
+
+      // Step 2 Continue
+      document.querySelector('#btn-to-step-3').addEventListener('click', () => {
+        const card2 = document.querySelector('#step-2-card');
+        const card3 = document.querySelector('#step-3-card');
+        card2.style.opacity = '0.7';
+        card3.style.opacity = '1';
+        card3.style.pointerEvents = 'auto';
+
+        // Track add_payment_info in Data Layer
+        const cart = getCart();
+        const totals = getCartTotals();
+        trackEvent('add_payment_info', {
+          currency: 'USD',
+          value: totals.total,
+          payment_type: selectedPayMethod === 'COD' ? 'Cash on Delivery' : 'Credit Card',
+          items: formatCartItemsToTracking(cart)
+        });
+
+        // Smooth scroll to Step 3
+        card3.scrollIntoView({ behavior: 'smooth' });
+      });
+
+      // Step 3 Click choices
+      const payOptions = document.querySelectorAll('.payment-method-option');
+      const cardDetailsBlock = document.querySelector('#mock-card-details-block');
+      payOptions.forEach(opt => {
+        opt.addEventListener('click', () => {
+          payOptions.forEach(o => o.classList.remove('active'));
+          opt.classList.add('active');
+          opt.querySelector('input[type="radio"]').checked = true;
+          selectedPayMethod = opt.getAttribute('data-method');
+
+          if (selectedPayMethod === 'card') {
+            cardDetailsBlock.style.display = 'block';
+            document.querySelector('#card-num').setAttribute('required', 'true');
+            document.querySelector('#card-exp').setAttribute('required', 'true');
+            document.querySelector('#card-cvc').setAttribute('required', 'true');
+          } else {
+            cardDetailsBlock.style.display = 'none';
+            document.querySelector('#card-num').removeAttribute('required');
+            document.querySelector('#card-exp').removeAttribute('required');
+            document.querySelector('#card-cvc').removeAttribute('required');
+          }
+        });
+      });
+    }
+
+    function setupSubmitHandler() {
+      const form = document.querySelector('#checkout-form');
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        // Retrieve address form fields
+        const billingDetails = {
+          firstName: document.querySelector('#ship-first-name').value.trim(),
+          lastName: document.querySelector('#ship-last-name').value.trim(),
+          email: document.querySelector('#ship-email').value.trim(),
+          phone: document.querySelector('#ship-phone').value.trim(),
+          address: document.querySelector('#ship-address').value.trim(),
+          city: document.querySelector('#ship-city').value.trim(),
+          state: document.querySelector('#ship-state').value.trim(),
+          zip: document.querySelector('#ship-zip').value.trim(),
+          country: document.querySelector('#ship-country').value
+        };
+
+        const shippingMethodName = selectedShipMethod === 'standard' ? 'Standard Delivery' : 'Express Courier';
+        const paymentMethodName = selectedPayMethod === 'COD' ? 'Cash on Delivery' : 'Online Credit Card';
+
+        const res = placeOrder(billingDetails, shippingMethodName, paymentMethodName);
+        if (res.success) {
+          window.location.href = 'thank-you.html';
+        } else {
+          window.dispatchEvent(new CustomEvent('show-toast', {
+            detail: { message: res.message, type: 'error' }
+          }));
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>

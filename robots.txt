@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard.html
+Disallow: /checkout.html
+Disallow: /thank-you.html
+
+Sitemap: https://aurawear-store.com/sitemap.xml
