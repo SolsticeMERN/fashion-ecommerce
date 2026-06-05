@@ -110,18 +110,201 @@ export async function trackEvent(eventName, eventData = {}) {
   const eventId = generateEventId(eventName);
   const techVars = getTechnicalTrackingVariables();
   const customerVars = getCustomerDataLayer();
+  const user = getCurrentUser();
   
-  // Format customer data with SHA-256 for Meta Advanced Matching & Google Enhanced Conversions
+  // 1. Build customer profile object
+  let customerObj = null;
+  if (user) {
+    customerObj = {
+      customer_id: user.customer_id,
+      user_id: user.customer_id,
+      external_id: user.customer_id,
+      first_name: user.customer_first_name,
+      last_name: user.customer_last_name,
+      full_name: `${user.customer_first_name} ${user.customer_last_name}`.trim(),
+      email: user.customer_email,
+      phone: user.customer_phone,
+      customer_type: user.customer_type || 'Retail',
+      account_created_date: '2026-05-12', // mock static creation
+      total_orders: user.orders ? user.orders.length : 0,
+      lifetime_value: user.orders ? user.orders.reduce((sum, o) => sum + o.total, 0) : 0
+    };
+  } else if (eventData.billing) {
+    // Guest customer profile mock
+    customerObj = {
+      customer_id: 'guest_' + techVars.session_id,
+      user_id: 'guest_' + techVars.session_id,
+      external_id: 'guest_' + techVars.session_id,
+      first_name: eventData.billing.first_name,
+      last_name: eventData.billing.last_name,
+      full_name: `${eventData.billing.first_name} ${eventData.billing.last_name}`.trim(),
+      email: eventData.billing.email,
+      phone: eventData.billing.phone,
+      customer_type: 'Guest',
+      account_created_date: new Date().toISOString().split('T')[0],
+      total_orders: 1,
+      lifetime_value: eventData.value
+    };
+  }
+
+  // 2. Build billing and shipping address objects
+  let billingAddressObj = null;
+  let shippingAddressObj = null;
+  
+  if (eventData.billing) {
+    billingAddressObj = {
+      first_name: eventData.billing.first_name,
+      last_name: eventData.billing.last_name,
+      full_name: `${eventData.billing.first_name} ${eventData.billing.last_name}`.trim(),
+      company: "",
+      email: eventData.billing.email,
+      phone: eventData.billing.phone,
+      address_line_1: eventData.billing.address,
+      address_line_2: "",
+      city: eventData.billing.city,
+      state: eventData.billing.state,
+      postal_code: eventData.billing.zip_code,
+      country: eventData.billing.country === 'US' ? 'United States' : eventData.billing.country,
+      country_code: eventData.billing.country
+    };
+    
+    shippingAddressObj = {
+      first_name: eventData.billing.first_name,
+      last_name: eventData.billing.last_name,
+      full_name: `${eventData.billing.first_name} ${eventData.billing.last_name}`.trim(),
+      company: "",
+      phone: eventData.billing.phone,
+      address_line_1: eventData.billing.address,
+      address_line_2: "",
+      city: eventData.billing.city,
+      state: eventData.billing.state,
+      postal_code: eventData.billing.zip_code,
+      country: eventData.billing.country === 'US' ? 'United States' : eventData.billing.country,
+      country_code: eventData.billing.country
+    };
+  } else if (user && user.customer_address) {
+    billingAddressObj = {
+      first_name: user.customer_first_name,
+      last_name: user.customer_last_name,
+      full_name: `${user.customer_first_name} ${user.customer_last_name}`.trim(),
+      company: "",
+      email: user.customer_email,
+      phone: user.customer_phone,
+      address_line_1: user.customer_address,
+      address_line_2: "",
+      city: user.customer_city,
+      state: user.customer_state,
+      postal_code: user.customer_postal_code,
+      country: user.customer_country === 'US' ? 'United States' : user.customer_country,
+      country_code: user.customer_country
+    };
+    shippingAddressObj = { ...billingAddressObj };
+    delete shippingAddressObj.email;
+  }
+
+  // 3. Build checkout object
+  let checkoutObj = null;
+  if (eventName === 'begin_checkout' || eventName === 'add_shipping_info' || eventName === 'add_payment_info') {
+    checkoutObj = {
+      checkout_step: eventName === 'begin_checkout' ? 1 : eventName === 'add_shipping_info' ? 2 : 3,
+      checkout_type: "standard",
+      payment_method: eventData.payment_type || "",
+      shipping_method: eventData.shipping_tier || "",
+      coupon_code: eventData.coupon || "",
+      currency: eventData.currency || "USD",
+      value: eventData.value || 0
+    };
+  }
+
+  // 4. Build complete purchase object
+  let purchaseObj = null;
+  if (eventName === 'purchase') {
+    purchaseObj = {
+      transaction_id: eventData.transaction_id,
+      order_id: orderId => eventData.order_id,
+      order_status: "Processing",
+      payment_status: "Pending",
+      payment_method: eventData.payment_method,
+      shipping_method: eventData.shipping_method,
+      currency: eventData.currency || "USD",
+      value: eventData.value,
+      subtotal: eventData.subtotal,
+      tax: eventData.tax,
+      shipping: eventData.shipping,
+      discount: eventData.discount || 0,
+      coupon: eventData.coupon || "",
+      item_count: eventData.item_count,
+      customer: customerObj,
+      billing_address: billingAddressObj,
+      shipping_address: shippingAddressObj,
+      items: eventData.items
+    };
+  }
+
+  // 5. Build user_data object (Meta advanced matching + Enhanced Conversions)
+  const userDataObj = {
+    email: customerVars.customer_email || (eventData.billing ? eventData.billing.email : null),
+    phone: customerVars.customer_phone || (eventData.billing ? eventData.billing.phone : null),
+    first_name: customerVars.customer_first_name || (eventData.billing ? eventData.billing.first_name : null),
+    last_name: customerVars.customer_last_name || (eventData.billing ? eventData.billing.last_name : null),
+    city: customerVars.customer_city || (eventData.billing ? eventData.billing.city : null),
+    state: customerVars.customer_state || (eventData.billing ? eventData.billing.state : null),
+    postal_code: customerVars.customer_postal_code || (eventData.billing ? eventData.billing.zip_code : null),
+    country: customerVars.customer_country || (eventData.billing ? eventData.billing.country : null),
+    external_id: customerVars.customer_id || null,
+    fbc: techVars.fbc,
+    fbp: techVars.fbp,
+    client_ip_address: "192.168.1.1", // mock client IP
+    client_user_agent: navigator.userAgent
+  };
+
+  // 6. Build traffic_source object
+  const trafficSourceObj = {
+    source: techVars.utm_source,
+    medium: techVars.utm_medium,
+    campaign: techVars.utm_campaign,
+    content: techVars.utm_content,
+    term: techVars.utm_term,
+    gclid: techVars.gclid,
+    gbraid: techVars.gbraid,
+    wbraid: techVars.wbraid,
+    fbclid: techVars.fbc ? techVars.fbc.split('.').pop() : null,
+    ttclid: techVars.ttclid
+  };
+
+  // 7. Build session_data object
+  const sessionDataObj = {
+    client_id: techVars.client_id,
+    session_id: techVars.session_id,
+    user_id: techVars.user_id,
+    event_id: eventId,
+    page_location: window.location.href,
+    page_referrer: document.referrer,
+    page_title: document.title
+  };
+
+  // Expose global window variables
+  window.customer = customerObj;
+  window.user_data = userDataObj;
+  window.traffic_source = trafficSourceObj;
+  window.session_data = sessionDataObj;
+  
+  if (checkoutObj) window.checkout = checkoutObj;
+  if (billingAddressObj) window.billing_address = billingAddressObj;
+  if (shippingAddressObj) window.shipping_address = shippingAddressObj;
+  if (purchaseObj) window.purchase = purchaseObj;
+
+  // Format customer data with SHA-256 hashes
   const hashedCustomer = {
-    email: customerVars.customer_email ? await sha256Hash(customerVars.customer_email) : null,
-    phone: customerVars.customer_phone ? await sha256Hash(customerVars.customer_phone) : null,
-    first_name: customerVars.customer_first_name ? await sha256Hash(customerVars.customer_first_name) : null,
-    last_name: customerVars.customer_last_name ? await sha256Hash(customerVars.customer_last_name) : null,
-    city: customerVars.customer_city ? await sha256Hash(customerVars.customer_city) : null,
-    state: customerVars.customer_state ? await sha256Hash(customerVars.customer_state) : null,
-    country: customerVars.customer_country ? await sha256Hash(customerVars.customer_country) : null,
-    zip_code: customerVars.customer_postal_code ? await sha256Hash(customerVars.customer_postal_code) : null,
-    external_id: customerVars.customer_id ? await sha256Hash(customerVars.customer_id) : null
+    email: userDataObj.email ? await sha256Hash(userDataObj.email) : null,
+    phone: userDataObj.phone ? await sha256Hash(userDataObj.phone) : null,
+    first_name: userDataObj.first_name ? await sha256Hash(userDataObj.first_name) : null,
+    last_name: userDataObj.last_name ? await sha256Hash(userDataObj.last_name) : null,
+    city: userDataObj.city ? await sha256Hash(userDataObj.city) : null,
+    state: userDataObj.state ? await sha256Hash(userDataObj.state) : null,
+    country: userDataObj.country ? await sha256Hash(userDataObj.country) : null,
+    zip_code: userDataObj.postal_code ? await sha256Hash(userDataObj.postal_code) : null,
+    external_id: userDataObj.external_id ? await sha256Hash(userDataObj.external_id) : null
   };
 
   const unifiedPayload = {
@@ -136,21 +319,60 @@ export async function trackEvent(eventName, eventData = {}) {
     custom_data: eventData
   };
 
-  // 1. Browser Push to window.dataLayer
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({
+  // Build root dataLayer push object
+  const dataLayerPushObject = {
     event: eventName,
     event_id: eventId,
     client_id: techVars.client_id,
     session_id: techVars.session_id,
     user_properties: {
       user_id: techVars.user_id,
-      customer_type: customerVars.customer_type
+      customer_type: customerVars.customer_type || 'Guest'
     },
-    ecommerce: eventData
-  });
+    
+    // Standard GA4 Ecommerce
+    ecommerce: eventData,
 
-  // Save Browser log to Local Storage
+    // Root Meta Advanced Matching Ready
+    email: userDataObj.email,
+    phone: userDataObj.phone,
+    first_name: userDataObj.first_name,
+    last_name: userDataObj.last_name,
+    city: userDataObj.city,
+    state: userDataObj.state,
+    country: userDataObj.country,
+    zip_code: userDataObj.postal_code,
+    external_id: userDataObj.external_id,
+
+    // Root Google Ads Enhanced Conversions Ready
+    phone_number: userDataObj.phone,
+    address: billingAddressObj ? {
+      first_name: billingAddressObj.first_name,
+      last_name: billingAddressObj.last_name,
+      street: billingAddressObj.address_line_1,
+      city: billingAddressObj.city,
+      region: billingAddressObj.state,
+      postal_code: billingAddressObj.postal_code,
+      country: billingAddressObj.country_code
+    } : null,
+    postal_code: userDataObj.postal_code,
+
+    // Global exposed objects nested in dataLayer
+    customer: customerObj,
+    billing_address: billingAddressObj,
+    shipping_address: shippingAddressObj,
+    checkout: checkoutObj,
+    purchase: purchaseObj,
+    user_data: userDataObj,
+    traffic_source: trafficSourceObj,
+    session_data: sessionDataObj
+  };
+
+  // 1. Browser Push to window.dataLayer
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push(dataLayerPushObject);
+
+  // Save Browser log to Local Storage for Debugger console
   const clientLogs = localStorage.getItem(CLIENT_EVENTS_KEY) 
     ? JSON.parse(localStorage.getItem(CLIENT_EVENTS_KEY)) 
     : [];
@@ -158,11 +380,7 @@ export async function trackEvent(eventName, eventData = {}) {
     timestamp: new Date().toLocaleTimeString(),
     eventName,
     eventId,
-    payload: {
-      event: eventName,
-      event_id: eventId,
-      ...eventData
-    }
+    payload: dataLayerPushObject
   });
   localStorage.setItem(CLIENT_EVENTS_KEY, JSON.stringify(clientLogs.slice(0, 50)));
 
