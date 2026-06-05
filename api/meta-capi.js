@@ -5,12 +5,68 @@ export default async function handler(req, res) {
     });
   }
 
-  const body = req.body;
+  try {
+    const body = req.body;
 
-  console.log('Meta CAPI Event Received:', body);
+    console.log('Meta CAPI Event Received:', body);
 
-  return res.status(200).json({
-    success: true,
-    received: body
-  });
+    const purchase = body.purchase;
+
+    const pixelId = process.env.META_PIXEL_ID;
+    const accessToken = process.env.META_ACCESS_TOKEN;
+
+    const payload = {
+      data: [
+        {
+          event_name: 'Purchase',
+          event_time: Math.floor(Date.now() / 1000),
+          event_id: purchase.event_id,
+          action_source: 'website',
+
+          user_data: {
+            em: purchase.user_data?.email
+              ? [purchase.user_data.email]
+              : undefined,
+
+            ph: purchase.user_data?.phone
+              ? [purchase.user_data.phone]
+              : undefined,
+
+            fbp: purchase.user_data?.fbp || undefined,
+            fbc: purchase.user_data?.fbc || undefined
+          },
+
+          custom_data: {
+            currency: purchase.ecommerce.currency,
+            value: purchase.ecommerce.value,
+            order_id: purchase.ecommerce.transaction_id
+          }
+        }
+      ]
+    };
+
+    const response = await fetch(
+      `https://graph.facebook.com/v23.0/${pixelId}/events?access_token=${accessToken}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      }
+    );
+
+    const result = await response.json();
+
+    console.log('Meta Response:', result);
+
+    return res.status(200).json(result);
+
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      error: error.message
+    });
+  }
 }
