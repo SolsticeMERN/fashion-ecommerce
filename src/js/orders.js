@@ -10,7 +10,15 @@ export function getProductInventory(productId, defaultQty) {
   if (overrides) {
     const parsed = JSON.parse(overrides);
     if (parsed[productId] !== undefined) {
-      return parsed[productId];
+      const val = parsed[productId];
+      if (val < 0) {
+        // Auto-heal negative override created by the bug.
+        const healed = Math.max(0, defaultQty + val);
+        parsed[productId] = healed;
+        localStorage.setItem(INVENTORY_OVERRIDES_KEY, JSON.stringify(parsed));
+        return healed;
+      }
+      return val;
     }
   }
   return defaultQty;
