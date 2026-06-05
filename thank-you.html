@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Order Confirmed | Aura Wear</title>
+  <meta name="description" content="Thank you for your order. Your minimalist staples are being packed and prepped for shipping.">
+  <link rel="canonical" href="./assets/thank-you-DB5DK6l0.html">
+  <script type="module" crossorigin src="./assets/thankYou-DRJ7NKFJ.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/main-jt3pKJ0m.js">
+  <link rel="modulepreload" crossorigin href="./assets/orders-20HZuKR2.js">
+  <link rel="stylesheet" crossorigin href="./assets/main-CF5AIB16.css">
+</head>
+<body>
+
+  <app-header></app-header>
+
+  <main class="container section">
+    <div class="thank-you-wrap">
+      <div class="success-icon-wrap">
+        &checkmark;
+      </div>
+      
+      <h1 class="thank-you-title font-display">Thank You</h1>
+      <p class="thank-you-subtitle">Your order has been placed successfully. A confirmation email has been sent to your inbox.</p>
+      
+      <!-- Receipt Invoice Card -->
+      <div class="order-details-box" id="receipt-card">
+        <h3 style="font-family:var(--font-sans); font-size:1.1rem; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:var(--spacing-md); border-bottom:1px solid var(--border-color); padding-bottom:var(--spacing-sm); color:var(--accent-gold);">Receipt Summary</h3>
+        
+        <div class="order-details-row">
+          <span>Order ID:</span>
+          <span id="rec-order-id" style="font-weight:600; font-family:monospace; color:var(--text-primary);">N/A</span>
+        </div>
+        <div class="order-details-row">
+          <span>Transaction ID:</span>
+          <span id="rec-tx-id" style="font-family:monospace;">N/A</span>
+        </div>
+        <div class="order-details-row">
+          <span>Order Date:</span>
+          <span id="rec-date">N/A</span>
+        </div>
+        <div class="order-details-row">
+          <span>Customer Email:</span>
+          <span id="rec-email">N/A</span>
+        </div>
+        <div class="order-details-row">
+          <span>Shipping Tier:</span>
+          <span id="rec-shipping-method">N/A</span>
+        </div>
+        <div class="order-details-row">
+          <span>Payment Method:</span>
+          <span id="rec-payment-method">N/A</span>
+        </div>
+        
+        <!-- Items listing -->
+        <div style="margin-top:var(--spacing-md); border-top:1px solid var(--border-color); padding-top:var(--spacing-md);">
+          <span class="form-label">Purchased Items:</span>
+          <div style="display:flex; flex-direction:column; gap:8px; margin-top:8px;" id="rec-items-list">
+            <!-- Items printed -->
+          </div>
+        </div>
+        
+        <div class="order-details-row" style="margin-top:var(--spacing-md); border-top:1px solid var(--border-color); padding-top:var(--spacing-sm);">
+          <span>Grand Total:</span>
+          <span id="rec-total" style="font-size:1.15rem; color:var(--accent-gold); font-weight:700;">$0.00</span>
+        </div>
+      </div>
+
+      <div class="flex gap-md justify-center">
+        <a href="shop.html" class="btn btn-primary">Continue Shopping</a>
+        <a href="dashboard.html" class="btn btn-secondary">View Order History</a>
+      </div>
+    </div>
+  </main>
+
+  <app-footer></app-footer>
+
+  
+
+</body>
+</html>

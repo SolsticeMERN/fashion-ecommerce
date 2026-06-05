@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Product Details | Aura Wear</title>
+  <meta name="description" content="View details, specs, customer reviews, and sizing for this premium capsule garment.">
+  <link rel="canonical" href="product.html">
+</head>
+<body>
+
+  <app-header></app-header>
+
+  <main class="container section">
+    <!-- Breadcrumbs -->
+    <div style="font-size:0.85rem; color:var(--text-muted); margin-bottom: var(--spacing-lg); text-transform:uppercase; letter-spacing:0.05em;">
+      <a href="index.html" style="color:inherit;">Home</a> / 
+      <a href="shop.html" style="color:inherit;">Shop</a> / 
+      <span id="breadcrumb-category" style="color:var(--text-primary);">Category</span> / 
+      <span id="breadcrumb-title" style="color:var(--text-muted);">Product</span>
+    </div>
+
+    <!-- Product Split Details Grid -->
+    <div class="product-detail-grid">
+      <!-- Left side: Images gallery -->
+      <div class="product-gallery-wrap">
+        <div class="product-gallery-main">
+          <img id="main-product-img" src="" alt="Product Main Image">
+        </div>
+        <div class="product-gallery-thumbs" id="product-thumbnails-container">
+          <!-- Thumbnail buttons populated dynamically -->
+        </div>
+      </div>
+
+      <!-- Right side: Info details -->
+      <div class="product-detail-info">
+        <div class="product-meta-top">
+          <span class="badge badge-gold" id="product-info-category">Category</span>
+          <span class="text-muted" style="font-size:0.85rem;" id="product-info-sku">SKU: N/A</span>
+        </div>
+
+        <h1 class="product-detail-title" id="product-info-title">Product Title</h1>
+        
+        <div class="product-rating" id="product-info-rating-wrap" style="margin-bottom:var(--spacing-md); font-size:1rem;">
+          <!-- Stars -->
+        </div>
+
+        <div class="product-detail-price-wrap">
+          <div id="product-info-price-container">
+            <!-- Price and sale details -->
+          </div>
+          <div class="stock-indicator" id="product-info-stock">
+            <!-- Stock alert -->
+          </div>
+        </div>
+
+        <p class="product-detail-desc" id="product-info-desc">
+          Detailed overview of the material and texture, design elements, fit profile, and recommended wash instructions.
+        </p>
+
+        <!-- Variants controls -->
+        <div class="product-options-wrap">
+          <!-- Colors -->
+          <div>
+            <span class="form-label" style="margin-bottom: var(--spacing-sm);">Select Color: <span id="selected-color-name" style="color:var(--text-primary); font-weight:600;">None</span></span>
+            <div class="swatch-color-list" id="detail-color-list">
+              <!-- Colors Swatches -->
+            </div>
+          </div>
+
+          <!-- Sizes -->
+          <div>
+            <span class="form-label" style="margin-bottom: var(--spacing-sm);">Select Size: <span id="selected-size-name" style="color:var(--text-primary); font-weight:600;">None</span></span>
+            <div class="swatch-size-list" id="detail-size-list">
+              <!-- Size pills -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Add Actions -->
+        <div class="product-actions-bar">
+          <div class="detail-qty-control">
+            <button class="detail-qty-btn" id="qty-dec">&minus;</button>
+            <span class="detail-qty-val" id="qty-val">1</span>
+            <button class="detail-qty-btn" id="qty-inc">&plus;</button>
+          </div>
+          <button class="btn btn-primary" id="add-to-cart-btn" style="flex-grow:1; display:flex; gap:8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
+            Add To Cart
+          </button>
+          <button class="btn btn-secondary" id="wishlist-toggle-btn" style="padding: 0.85rem;" title="Add to Wishlist">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Related Products -->
+    <section class="section" style="border-top:1px solid var(--border-color); margin-top:var(--spacing-xxl);">
+      <div class="section-title-wrap" style="text-align:left;">
+        <span class="section-subtitle">Complete The Look</span>
+        <h2 class="section-title" style="font-size:2rem;">Related Collection Items</h2>
+      </div>
+      <div class="grid grid-4" id="related-products-grid">
+        <!-- Dyn contents -->
+      </div>
+    </section>
+
+    <!-- Cross-Sell / Upsell Slider -->
+    <section class="section" style="border-top:1px solid var(--border-color); padding-top:var(--spacing-xl);">
+      <div class="section-title-wrap" style="text-align:left;">
+        <span class="section-subtitle">Recommended For You</span>
+        <h2 class="section-title" style="font-size:2rem;">Suggested Upsell Products</h2>
+      </div>
+      <div class="grid grid-4" id="upsell-products-grid">
+        <!-- Dyn contents -->
+      </div>
+    </section>
+
+    <!-- Recently Viewed Products -->
+    <section class="section" id="recently-viewed-section" style="border-top:1px solid var(--border-color); padding-top:var(--spacing-xl); display:none;">
+      <div class="section-title-wrap" style="text-align:left;">
+        <span class="section-subtitle">History</span>
+        <h2 class="section-title" style="font-size:2rem;">Recently Viewed Styles</h2>
+      </div>
+      <div class="grid grid-4" id="recently-viewed-grid">
+        <!-- Dyn contents -->
+      </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section class="section" style="border-top:1px solid var(--border-color); padding-top:var(--spacing-xl);">
+      <div class="section-title-wrap" style="text-align:left;">
+        <span class="section-subtitle">Feedback</span>
+        <h2 class="section-title" style="font-size:2rem;">Customer Reviews</h2>
+      </div>
+      
+      <div class="grid grid-2" style="align-items:flex-start;">
+        <!-- Left: average breakdown -->
+        <div class="glass-panel" style="padding:var(--spacing-lg); display:flex; gap:var(--spacing-lg); align-items:center;">
+          <div style="text-align:center; flex-shrink:0;">
+            <div style="font-size:3.5rem; font-weight:700; color:var(--accent-gold); font-family:var(--font-display);" id="review-avg-big">0.0</div>
+            <div class="product-rating" id="review-stars-big" style="font-size:0.9rem; justify-content:center;"></div>
+            <div style="font-size:0.8rem; color:var(--text-secondary); margin-top:4px;"><span id="review-count-big">0</span> reviews</div>
+          </div>
+          <div style="flex-grow:1; display:flex; flex-direction:column; gap:4px; font-size:0.85rem;">
+            <div class="flex align-center gap-sm"><span>5★</span><div style="flex-grow:1; height:6px; background:#222; border-radius:3px; overflow:hidden;"><div style="width:85%; height:100%; background:var(--accent-gold);"></div></div><span>85%</span></div>
+            <div class="flex align-center gap-sm"><span>4★</span><div style="flex-grow:1; height:6px; background:#222; border-radius:3px; overflow:hidden;"><div style="width:10%; height:100%; background:var(--accent-gold);"></div></div><span>10%</span></div>
+            <div class="flex align-center gap-sm"><span>3★</span><div style="flex-grow:1; height:6px; background:#222; border-radius:3px; overflow:hidden;"><div style="width:5%; height:100%; background:var(--accent-gold);"></div></div><span>5%</span></div>
+            <div class="flex align-center gap-sm"><span>2★</span><div style="flex-grow:1; height:6px; background:#222; border-radius:3px; overflow:hidden;"><div style="width:0%; height:100%; background:var(--accent-gold);"></div></div><span>0%</span></div>
+            <div class="flex align-center gap-sm"><span>1★</span><div style="flex-grow:1; height:6px; background:#222; border-radius:3px; overflow:hidden;"><div style="width:0%; height:100%; background:var(--accent-gold);"></div></div><span>0%</span></div>
+          </div>
+        </div>
+        
+        <!-- Right: list -->
+        <div style="display:flex; flex-direction:column; gap:var(--spacing-md);" id="product-reviews-list-container">
+          <!-- Reviews list -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <app-footer></app-footer>
+
+  <script type="module" src="/src/main.js"></script>
+  
+  <script type="module">
+    import { getProductById, getRelatedProducts, getUpsellProducts, PRODUCTS } from './src/js/products.js';
+    import { getProductInventory } from './src/js/orders.js';
+    import { addToCart, toggleWishlist, isInWishlist, addRecentlyViewed, getRecentlyViewed } from './src/js/store.js';
+    import { trackEvent, formatCartItemsToTracking } from './src/js/tracking.js';
+    import { formatCurrency, getQueryParams } from './src/js/utils.js';
+
+    // Global selected states
+    let activeProduct = null;
+    let selectedColor = null;
+    let selectedSize = null;
+    let purchaseQty = 1;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Fetch product ID from URL
+      const params = getQueryParams();
+      const id = parseInt(params.id);
+
+      if (!id || isNaN(id)) {
+        window.location.href = 'shop.html';
+        return;
+      }
+
+      activeProduct = getProductById(id);
+      if (!activeProduct) {
+        window.location.href = 'shop.html';
+        return;
+      }
+
+      // 2. Add to recently viewed state
+      addRecentlyViewed(activeProduct.id);
+
+      // 3. Inject dynamic Schema (Product Schema)
+      injectProductSchema();
+
+      // 4. Update page details and meta
+      renderProductDetails();
+
+      // 5. Render related elements
+      renderRelated();
+      renderUpsell();
+      renderRecentlyViewed();
+
+      // 6. Track view_item in Data Layer
+      trackEvent('view_item', {
+        currency: 'USD',
+        value: activeProduct.salePrice || activeProduct.price,
+        items: formatCartItemsToTracking([
+          {
+            id: activeProduct.id,
+            title: activeProduct.title,
+            price: activeProduct.salePrice || activeProduct.price,
+            sku: activeProduct.sku,
+            category: activeProduct.category,
+            category2: activeProduct.category2 || '',
+            category3: activeProduct.category3 || '',
+            quantity: 1
+          }
+        ])
+      });
+
+      // 7. Setup variant swatches clicking & qty
+      setupInteractiveControls();
+    });
+
+    function injectProductSchema() {
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      
+      const schema = {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": activeProduct.title,
+        "image": activeProduct.images,
+        "description": activeProduct.description,
+        "sku": activeProduct.sku,
+        "mpn": activeProduct.sku,
+        "brand": {
+          "@type": "Brand",
+          "name": "Aura Wear"
+        },
+        "review": activeProduct.reviews.map(r => ({
+          "@type": "Review",
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": r.rating.toString(),
+            "bestRating": "5"
+          },
+          "author": {
+            "@type": "Person",
+            "name": r.author
+          },
+          "reviewBody": r.comment
+        })),
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": activeProduct.rating.toString(),
+          "reviewCount": activeProduct.reviewCount.toString()
+        },
+        "offers": {
+          "@type": "Offer",
+          "url": window.location.href,
+          "priceCurrency": "USD",
+          "price": (activeProduct.salePrice || activeProduct.price).toString(),
+          "priceValidUntil": "2027-01-01",
+          "itemCondition": "https://schema.org/NewCondition",
+          "availability": getProductInventory(activeProduct.id, activeProduct.inventory) > 0 
+            ? "https://schema.org/InStock" 
+            : "https://schema.org/OutOfStock",
+          "seller": {
+            "@type": "Organization",
+            "name": "Aura Wear"
+          }
+        }
+      };
+
+      script.text = JSON.stringify(schema);
+      document.head.appendChild(script);
+    }
+
+    function renderProductDetails() {
+      // Set titles
+      document.title = `${activeProduct.title} | Aura Wear`;
+      document.querySelector('#breadcrumb-category').textContent = activeProduct.category;
+      document.querySelector('#breadcrumb-category').setAttribute('href', `shop.html?category=${activeProduct.category}`);
+      document.querySelector('#breadcrumb-title').textContent = activeProduct.title;
+
+      // Gallery
+      document.querySelector('#main-product-img').src = activeProduct.images[0];
+      document.querySelector('#main-product-img').alt = activeProduct.title;
+
+      const thumbsWrap = document.querySelector('#product-thumbnails-container');
+      thumbsWrap.innerHTML = activeProduct.images.map((img, idx) => `
+        <button class="product-gallery-thumb ${idx === 0 ? 'active' : ''}" data-src="${img}">
+          <img src="${img}" alt="${activeProduct.title} Thumb ${idx+1}">
+        </button>
+      `).join('');
+
+      thumbsWrap.querySelectorAll('.product-gallery-thumb').forEach(btn => {
+        btn.addEventListener('click', () => {
+          thumbsWrap.querySelectorAll('.product-gallery-thumb').forEach(t => t.classList.remove('active'));
+          btn.classList.add('active');
+          document.querySelector('#main-product-img').src = btn.getAttribute('data-src');
+        });
+      });
+
+      // Specs Info
+      document.querySelector('#product-info-category').textContent = activeProduct.category;
+      document.querySelector('#product-info-sku').textContent = `SKU: ${activeProduct.sku}`;
+      document.querySelector('#product-info-title').textContent = activeProduct.title;
+      document.querySelector('#product-info-desc').textContent = activeProduct.description;
+
+      // Ratings
+      const ratingStars = '&#9733;'.repeat(Math.round(activeProduct.rating)) + '&#9734;'.repeat(5 - Math.round(activeProduct.rating));
+      document.querySelector('#product-info-rating-wrap').innerHTML = `${ratingStars} <span class="text-muted" style="font-size:0.8rem; font-weight:normal;">(${activeProduct.reviewCount} customer reviews)</span>`;
+
+      // Price
+      const priceContainer = document.querySelector('#product-info-price-container');
+      if (activeProduct.salePrice) {
+        priceContainer.innerHTML = `
+          <span class="product-detail-price sale">${formatCurrency(activeProduct.salePrice)}</span>
+          <span class="price-original" style="font-size:1.2rem; margin-left:8px;">${formatCurrency(activeProduct.price)}</span>
+        `;
+      } else {
+        priceContainer.innerHTML = `<span class="product-detail-price">${formatCurrency(activeProduct.price)}</span>`;
+      }
+
+      // Stock indicator
+      const currentStock = getProductInventory(activeProduct.id, activeProduct.inventory);
+      const stockEl = document.querySelector('#product-info-stock');
+      if (currentStock <= 0) {
+        stockEl.className = "stock-indicator out";
+        stockEl.innerHTML = `<span>&bull;</span> Out of stock`;
+        document.querySelector('#add-to-cart-btn').disabled = true;
+        document.querySelector('#add-to-cart-btn').textContent = "Sold Out";
+      } else if (currentStock <= 3) {
+        stockEl.className = "stock-indicator low";
+        stockEl.innerHTML = `<span>&bull;</span> Low stock: Only ${currentStock} items left`;
+      } else {
+        stockEl.className = "stock-indicator in";
+        stockEl.innerHTML = `<span>&bull;</span> In stock: Ready to ship`;
+      }
+
+      // Render variants
+      renderVariantSwatches();
+
+      // Big reviews summary
+      document.querySelector('#review-avg-big').textContent = activeProduct.rating.toFixed(1);
+      document.querySelector('#review-stars-big').innerHTML = '&#9733;'.repeat(Math.round(activeProduct.rating)) + '&#9734;'.repeat(5 - Math.round(activeProduct.rating));
+      document.querySelector('#review-count-big').textContent = activeProduct.reviewCount;
+
+      // Reviews list
+      const reviewsList = document.querySelector('#product-reviews-list-container');
+      if (activeProduct.reviews.length === 0) {
+        reviewsList.innerHTML = `<p class="text-muted">No reviews yet for this product.</p>`;
+      } else {
+        reviewsList.innerHTML = activeProduct.reviews.map(r => `
+          <div class="glass-panel" style="padding:var(--spacing-md);">
+            <div class="flex justify-between align-center" style="margin-bottom:var(--spacing-xs);">
+              <span style="font-weight:600;">${r.author}</span>
+              <span class="text-muted" style="font-size:0.75rem;">${r.date}</span>
+            </div>
+            <div class="product-rating" style="font-size:0.75rem; margin-bottom:var(--spacing-sm);">
+              ${'&#9733;'.repeat(r.rating)}${'&#9734;'.repeat(5 - r.rating)}
+            </div>
+            <p style="font-size:0.9rem; color:var(--text-secondary); line-height:1.5;">${r.comment}</p>
+          </div>
+        `).join('');
+      }
+    }
+
+    function renderVariantSwatches() {
+      const colorsWrap = document.querySelector('#detail-color-list');
+      const sizesWrap = document.querySelector('#detail-size-list');
+
+      // Populate Colors
+      if (activeProduct.variants.colors && activeProduct.variants.colors.length > 0) {
+        colorsWrap.innerHTML = activeProduct.variants.colors.map((c, idx) => `
+          <div class="swatch-color ${idx === 0 ? 'active' : ''}" data-color="${c.name}" style="background-color: ${c.value};" title="${c.name}"></div>
+        `).join('');
+        selectedColor = activeProduct.variants.colors[0].name;
+        document.querySelector('#selected-color-name').textContent = selectedColor;
+      }
+
+      // Populate Sizes
+      if (activeProduct.variants.sizes && activeProduct.variants.sizes.length > 0) {
+        sizesWrap.innerHTML = activeProduct.variants.sizes.map((s, idx) => `
+          <div class="swatch-size ${idx === 0 ? 'active' : ''}" data-size="${s}">${s}</div>
+        `).join('');
+        selectedSize = activeProduct.variants.sizes[0];
+        document.querySelector('#selected-size-name').textContent = selectedSize;
+      }
+    }
+
+    function renderProductGridItems(targetId, list) {
+      const wrap = document.querySelector(targetId);
+      if (!wrap || list.length === 0) return;
+
+      wrap.innerHTML = list.map(product => {
+        const isWish = isInWishlist(product.id);
+        const hasSale = product.salePrice !== undefined;
+        
+        return `
+          <div class="product-card" data-id="${product.id}">
+            <div class="product-image-container">
+              ${hasSale ? `<span class="badge badge-sale product-badge">Sale</span>` : ''}
+              <a href="product.html?id=${product.id}" class="related-link" data-id="${product.id}">
+                <img class="product-img" src="${product.images[0]}" alt="${product.title}">
+              </a>
+              <button class="wishlist-btn-icon ${isWish ? 'active' : ''}" data-id="${product.id}" title="${isWish ? 'Remove from Wishlist' : 'Add to Wishlist'}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="${isWish ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+              </button>
+            </div>
+            
+            <div class="product-info">
+              <span class="product-cat">${product.category}</span>
+              <a href="product.html?id=${product.id}" class="related-link" data-id="${product.id}">
+                <h3 class="product-name">${product.title}</h3>
+              </a>
+              <div class="product-rating">
+                ${'&#9733;'.repeat(Math.round(product.rating))}${'&#9734;'.repeat(5 - Math.round(product.rating))}
+                <span>(${product.reviewCount})</span>
+              </div>
+              <div class="product-price-wrap">
+                ${hasSale 
+                  ? `<span class="price-sale">${formatCurrency(product.salePrice)}</span><span class="price-original">${formatCurrency(product.price)}</span>` 
+                  : `<span class="price-regular">${formatCurrency(product.price)}</span>`
+                }
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Click related upsell select_item tracking
+      wrap.querySelectorAll('.related-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetId = parseInt(link.getAttribute('data-id'));
+          const p = PRODUCTS.find(prod => prod.id === targetId);
+          
+          trackEvent('select_item', {
+            item_list_name: targetId === '#related-products-grid' ? 'Related Items List' : 'Upsell Recommendations List',
+            items: formatCartItemsToTracking([p])
+          });
+          
+          setTimeout(() => {
+            window.location.href = link.getAttribute('href');
+          }, 150);
+        });
+      });
+    }
+
+    function renderRelated() {
+      const list = getRelatedProducts(activeProduct, 4);
+      renderProductGridItems('#related-products-grid', list);
+    }
+
+    function renderUpsell() {
+      // Upsell: recommended items that are generally higher priced or alternative
+      const list = getUpsellProducts(activeProduct, 4);
+      renderProductGridItems('#upsell-products-grid', list);
+    }
+
+    function renderRecentlyViewed() {
+      const listIds = getRecentlyViewed().filter(id => id !== activeProduct.id);
+      if (listIds.length === 0) return;
+
+      const list = listIds.map(id => getProductById(id)).filter(Boolean).slice(0, 4);
+      if (list.length > 0) {
+        document.querySelector('#recently-viewed-section').style.display = 'block';
+        renderProductGridItems('#recently-viewed-grid', list);
+      }
+    }
+
+    function setupInteractiveControls() {
+      // Colors swatches clicking
+      const colorsWrap = document.querySelector('#detail-color-list');
+      colorsWrap.querySelectorAll('.swatch-color').forEach(el => {
+        el.addEventListener('click', () => {
+          colorsWrap.querySelectorAll('.swatch-color').forEach(c => c.classList.remove('active'));
+          el.classList.add('active');
+          selectedColor = el.getAttribute('data-color');
+          document.querySelector('#selected-color-name').textContent = selectedColor;
+        });
+      });
+
+      // Sizes swatches clicking
+      const sizesWrap = document.querySelector('#detail-size-list');
+      sizesWrap.querySelectorAll('.swatch-size').forEach(el => {
+        el.addEventListener('click', () => {
+          sizesWrap.querySelectorAll('.swatch-size').forEach(s => s.classList.remove('active'));
+          el.classList.add('active');
+          selectedSize = el.getAttribute('data-size');
+          document.querySelector('#selected-size-name').textContent = selectedSize;
+        });
+      });
+
+      // Quantity controls
+      const qtyVal = document.querySelector('#qty-val');
+      document.querySelector('#qty-dec').addEventListener('click', () => {
+        if (purchaseQty > 1) {
+          purchaseQty--;
+          qtyVal.textContent = purchaseQty;
+        }
+      });
+      document.querySelector('#qty-inc').addEventListener('click', () => {
+        const currentStock = getProductInventory(activeProduct.id, activeProduct.inventory);
+        if (purchaseQty < currentStock) {
+          purchaseQty++;
+          qtyVal.textContent = purchaseQty;
+        } else {
+          window.dispatchEvent(new CustomEvent('show-toast', {
+            detail: { message: `Cannot select more than ${currentStock} items. Stock limit reached.`, type: 'warning' }
+          }));
+        }
+      });
+
+      // Add to Cart
+      document.querySelector('#add-to-cart-btn').addEventListener('click', () => {
+        const addedItem = addToCart(activeProduct.id, purchaseQty, selectedColor, selectedSize);
+        if (addedItem) {
+          window.dispatchEvent(new CustomEvent('show-toast', {
+            detail: { message: `Added ${purchaseQty}x "${addedItem.title}" to cart.`, type: 'success' }
+          }));
+
+          // Track add_to_cart event in Data Layer
+          trackEvent('add_to_cart', {
+            currency: 'USD',
+            value: addedItem.price * purchaseQty,
+            items: formatCartItemsToTracking([{
+              ...addedItem,
+              quantity: purchaseQty,
+              color: selectedColor,
+              size: selectedSize
+            }])
+          });
+
+          // Open cart drawer
+          setTimeout(() => {
+            document.querySelector('app-header').openCartDrawer();
+          }, 400);
+        }
+      });
+
+      // Wishlist toggle
+      const wishlistBtn = document.querySelector('#wishlist-toggle-btn');
+      const isWish = isInWishlist(activeProduct.id);
+      const svg = wishlistBtn.querySelector('svg');
+      if (isWish) {
+        wishlistBtn.classList.add('btn-primary');
+        wishlistBtn.classList.remove('btn-secondary');
+        svg.setAttribute('fill', 'currentColor');
+      }
+
+      wishlistBtn.addEventListener('click', () => {
+        const isAdded = toggleWishlist(activeProduct.id);
+        if (isAdded) {
+          wishlistBtn.classList.add('btn-primary');
+          wishlistBtn.classList.remove('btn-secondary');
+          svg.setAttribute('fill', 'currentColor');
+          window.dispatchEvent(new CustomEvent('show-toast', {
+            detail: { message: `Saved "${activeProduct.title}" to wishlist.`, type: 'success' }
+          }));
+
+          trackEvent('add_to_wishlist', {
+            currency: 'USD',
+            value: activeProduct.salePrice || activeProduct.price,
+            items: formatCartItemsToTracking([{
+              id: activeProduct.id,
+              title: activeProduct.title,
+              price: activeProduct.salePrice || activeProduct.price,
+              sku: activeProduct.sku,
+              category: activeProduct.category,
+              quantity: 1
+            }])
+          });
+        } else {
+          wishlistBtn.classList.remove('btn-primary');
+          wishlistBtn.classList.add('btn-secondary');
+          svg.setAttribute('fill', 'none');
+          window.dispatchEvent(new CustomEvent('show-toast', {
+            detail: { message: `Removed "${activeProduct.title}" from wishlist.`, type: 'info' }
+          }));
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>

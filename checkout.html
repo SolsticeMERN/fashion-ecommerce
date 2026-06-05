@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Secure Checkout | Aura Wear</title>
+  <meta name="description" content="Securely complete your minimalist capsule purchase. Choose shipping speed and payment options.">
+  <link rel="canonical" href="./assets/checkout-BHESqiD8.html">
+  <script type="module" crossorigin src="./assets/checkout-C1CSymIB.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/main-jt3pKJ0m.js">
+  <link rel="modulepreload" crossorigin href="./assets/orders-20HZuKR2.js">
+  <link rel="stylesheet" crossorigin href="./assets/main-CF5AIB16.css">
+</head>
+<body>
+
+  <app-header></app-header>
+
+  <main class="container section">
+    <div class="section-title-wrap" style="text-align: left; margin-bottom: var(--spacing-xl);">
+      <span class="section-subtitle">Secure</span>
+      <h1 class="section-title" style="margin-bottom: 0;">Checkout</h1>
+    </div>
+
+    <div class="checkout-layout" id="checkout-container">
+      <!-- Left: 3 Funnel Steps -->
+      <div>
+        <form id="checkout-form">
+          <!-- Step 1: Customer Info & Shipping Address -->
+          <div class="checkout-step-card" id="step-1-card">
+            <h3 class="checkout-step-title">
+              <span class="checkout-step-number">1</span>
+              Shipping Address
+            </h3>
+            
+            <div class="form-group">
+              <label class="form-label" for="ship-email">Email Address *</label>
+              <input type="email" class="form-input" id="ship-email" required autocomplete="email">
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="ship-first-name">First Name *</label>
+                <input type="text" class="form-input" id="ship-first-name" required autocomplete="given-name">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="ship-last-name">Last Name *</label>
+                <input type="text" class="form-input" id="ship-last-name" required autocomplete="family-name">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="ship-phone">Phone Number *</label>
+              <input type="tel" class="form-input" id="ship-phone" required autocomplete="tel" placeholder="+1234567890">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="ship-address">Street Address *</label>
+              <input type="text" class="form-input" id="ship-address" required autocomplete="street-address">
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="ship-city">City *</label>
+                <input type="text" class="form-input" id="ship-city" required autocomplete="address-level2">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="ship-state">State / Province *</label>
+                <input type="text" class="form-input" id="ship-state" required autocomplete="address-level1">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="ship-zip">Zip / Postal Code *</label>
+                <input type="text" class="form-input" id="ship-zip" required autocomplete="postal-code">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="ship-country">Country *</label>
+                <select class="form-input" id="ship-country" required autocomplete="country">
+                  <option value="US">United States</option>
+                  <option value="CA">Canada</option>
+                  <option value="GB">United Kingdom</option>
+                  <option value="AU">Australia</option>
+                </select>
+              </div>
+            </div>
+            
+            <button type="button" class="btn btn-primary" id="btn-to-step-2" style="width:100%; margin-top:var(--spacing-sm);">Continue to Shipping</button>
+          </div>
+
+          <!-- Step 2: Shipping Method -->
+          <div class="checkout-step-card" id="step-2-card" style="opacity: 0.5; pointer-events: none;">
+            <h3 class="checkout-step-title">
+              <span class="checkout-step-number">2</span>
+              Shipping Method
+            </h3>
+            
+            <div class="shipping-method-option active" data-method="standard" data-price="15">
+              <div class="shipping-option-left">
+                <input type="radio" name="ship-method" id="ship-std" value="Standard" checked>
+                <div>
+                  <span style="font-weight:600; display:block;">Standard Delivery</span>
+                  <span class="text-muted" style="font-size:0.8rem;">Arrives in 3-5 business days</span>
+                </div>
+              </div>
+              <span style="font-weight:600;" id="std-shipping-price">$15.00</span>
+            </div>
+
+            <div class="shipping-method-option" data-method="express" data-price="25">
+              <div class="shipping-option-left">
+                <input type="radio" name="ship-method" id="ship-exp" value="Express">
+                <div>
+                  <span style="font-weight:600; display:block;">Express Courier</span>
+                  <span class="text-muted" style="font-size:0.8rem;">Arrives in 1-2 business days</span>
+                </div>
+              </div>
+              <span style="font-weight:600;">$25.00</span>
+            </div>
+            
+            <button type="button" class="btn btn-primary" id="btn-to-step-3" style="width:100%; margin-top:var(--spacing-sm);">Continue to Payment</button>
+          </div>
+
+          <!-- Step 3: Payment Options -->
+          <div class="checkout-step-card" id="step-3-card" style="opacity: 0.5; pointer-events: none;">
+            <h3 class="checkout-step-title">
+              <span class="checkout-step-number">3</span>
+              Payment Method
+            </h3>
+
+            <div class="payment-method-option active" data-method="COD">
+              <div class="payment-option-left">
+                <input type="radio" name="payment-method" id="pay-cod" value="Cash on Delivery" checked>
+                <div>
+                  <span style="font-weight:600; display:block;">Cash on Delivery (COD)</span>
+                  <span class="text-muted" style="font-size:0.8rem;">Pay cash upon packet inspection</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="payment-method-option" data-method="card">
+              <div class="payment-option-left">
+                <input type="radio" name="payment-method" id="pay-card" value="Online Card">
+                <div>
+                  <span style="font-weight:600; display:block;">Mock Credit Card Payment</span>
+                  <span class="text-muted" style="font-size:0.8rem;">Simulated Visa / Mastercard gateway</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Simulated Credit Card Details block -->
+            <div id="mock-card-details-block" style="display:none; margin-top:var(--spacing-md); border-top:1px solid var(--border-color); padding-top:var(--spacing-md);">
+              <div class="form-group">
+                <label class="form-label" for="card-num">Card Number</label>
+                <input type="text" class="form-input" id="card-num" placeholder="4111 2222 3333 4444" pattern="[0-9\\s]{13,19}">
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="card-exp">Expiry Date</label>
+                  <input type="text" class="form-input" id="card-exp" placeholder="MM/YY">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="card-cvc">CVC Code</label>
+                  <input type="text" class="form-input" id="card-cvc" placeholder="321">
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="btn-place-order" style="width:100%; margin-top:var(--spacing-lg); font-size:1rem; padding:1.1rem var(--spacing-xl);">Place Order</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Right: Summary overview -->
+      <aside>
+        <div class="cart-summary-card">
+          <h3 class="summary-title" style="margin-bottom:var(--spacing-md);">Order Summary</h3>
+          
+          <!-- Items lines list -->
+          <div style="max-height:220px; overflow-y:auto; display:flex; flex-direction:column; gap:var(--spacing-sm); margin-bottom:var(--spacing-md); border-bottom:1px solid var(--border-color); padding-bottom:var(--spacing-md);" id="checkout-summary-items">
+            <!-- Items injected dynamically -->
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:var(--spacing-sm); border-bottom:1px solid var(--border-color); padding-bottom:var(--spacing-md);">
+            <div class="summary-row">
+              <span>Subtotal:</span>
+              <span id="chk-subtotal">$0.00</span>
+            </div>
+            <div class="summary-row" id="chk-discount-row" style="display:none; color:var(--color-success);">
+              <span>Discount:</span>
+              <span id="chk-discount">-$0.00</span>
+            </div>
+            <div class="summary-row">
+              <span>Shipping Fee:</span>
+              <span id="chk-shipping">$0.00</span>
+            </div>
+            <div class="summary-row">
+              <span>Sales Tax (5%):</span>
+              <span id="chk-tax">$0.00</span>
+            </div>
+          </div>
+
+          <div class="summary-row total" style="border-top:none; padding-top:0;">
+            <span>Order Total:</span>
+            <span id="chk-total">$0.00</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <app-footer></app-footer>
+
+  
+
+</body>
+</html>

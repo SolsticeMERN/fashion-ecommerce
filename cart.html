@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Your Shopping Cart | Aura Wear</title>
+  <meta name="description" content="Review your minimal staples, calculate shipping, apply coupon codes, and proceed to checkout.">
+  <link rel="canonical" href="./assets/cart-BLD35TIo.html">
+  <script type="module" crossorigin src="./assets/cart-6JLdx0D-.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/main-jt3pKJ0m.js">
+  <link rel="stylesheet" crossorigin href="./assets/main-CF5AIB16.css">
+</head>
+<body>
+
+  <app-header></app-header>
+
+  <main class="container section">
+    <div class="section-title-wrap" style="text-align: left; margin-bottom: var(--spacing-xl);">
+      <span class="section-subtitle">Summary</span>
+      <h1 class="section-title" style="margin-bottom: 0;">Shopping Cart</h1>
+    </div>
+
+    <!-- Empty cart layout placeholder -->
+    <div id="empty-cart-layout" style="display:none; text-align:center; padding: var(--spacing-xxl) 0;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:var(--spacing-md); color:var(--text-muted);">
+        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <path d="M16 10a4 4 0 0 1-8 0"></path>
+      </svg>
+      <h2 style="font-family:var(--font-sans); font-size:1.5rem; margin-bottom:var(--spacing-sm);">Your cart is currently empty</h2>
+      <p style="color:var(--text-secondary); margin-bottom:var(--spacing-lg);">Add some premium minimalist items to your bag.</p>
+      <a href="shop.html" class="btn btn-primary">Go to Shop</a>
+    </div>
+
+    <!-- Active cart layout -->
+    <div class="cart-layout" id="active-cart-layout">
+      <!-- Left: Line items -->
+      <div class="cart-table-card">
+        <div class="cart-table-header">
+          <span>Product</span>
+          <span>Price</span>
+          <span>Quantity</span>
+          <span style="text-align:right;">Subtotal</span>
+        </div>
+        
+        <div class="cart-table-rows" id="cart-items-container">
+          <!-- Rows will be injected dynamically -->
+        </div>
+      </div>
+
+      <!-- Right: Summary details -->
+      <aside class="cart-summary-card">
+        <h3 class="summary-title">Order Summary</h3>
+        
+        <!-- Coupon Form -->
+        <div class="coupon-section">
+          <input type="text" class="form-input" id="coupon-code-input" placeholder="Promo Code" style="padding:0.6rem 0.8rem; font-size:0.85rem;">
+          <button class="btn btn-dark" id="apply-coupon-btn" style="padding:0.6rem 1.2rem; font-size:0.85rem; font-weight:600;">Apply</button>
+        </div>
+        <div id="coupon-alert-msg" style="font-size:0.8rem; display:none; font-weight:500;"></div>
+
+        <!-- Calculations -->
+        <div style="display:flex; flex-direction:column; gap:var(--spacing-sm); border-bottom:1px solid var(--border-color); padding-bottom:var(--spacing-md);">
+          <div class="summary-row">
+            <span>Subtotal:</span>
+            <span id="summary-subtotal">$0.00</span>
+          </div>
+          <div class="summary-row" id="summary-discount-row" style="display:none; color:var(--color-success);">
+            <span>Discount:</span>
+            <span id="summary-discount">-$0.00</span>
+          </div>
+          <div class="summary-row">
+            <span>Shipping:</span>
+            <span id="summary-shipping">$0.00</span>
+          </div>
+          <div class="summary-row">
+            <span>Sales Tax (5%):</span>
+            <span id="summary-tax">$0.00</span>
+          </div>
+        </div>
+
+        <div class="summary-row total">
+          <span>Estimated Total:</span>
+          <span id="summary-total">$0.00</span>
+        </div>
+
+        <a href="checkout.html" class="btn btn-primary text-center" style="width: 100%;">Proceed to Checkout</a>
+        <a href="shop.html" class="text-center" style="font-size: 0.85rem; color: var(--text-secondary); text-decoration: underline; letter-spacing:0.05em; text-transform:uppercase;">Continue Shopping</a>
+      </aside>
+    </div>
+  </main>
+
+  <app-footer></app-footer>
+
+  
+
+</body>
+</html>

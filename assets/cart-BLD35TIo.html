@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Your Shopping Cart | Aura Wear</title>
+  <meta name="description" content="Review your minimal staples, calculate shipping, apply coupon codes, and proceed to checkout.">
+  <link rel="canonical" href="cart.html">
+</head>
+<body>
+
+  <app-header></app-header>
+
+  <main class="container section">
+    <div class="section-title-wrap" style="text-align: left; margin-bottom: var(--spacing-xl);">
+      <span class="section-subtitle">Summary</span>
+      <h1 class="section-title" style="margin-bottom: 0;">Shopping Cart</h1>
+    </div>
+
+    <!-- Empty cart layout placeholder -->
+    <div id="empty-cart-layout" style="display:none; text-align:center; padding: var(--spacing-xxl) 0;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:var(--spacing-md); color:var(--text-muted);">
+        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <path d="M16 10a4 4 0 0 1-8 0"></path>
+      </svg>
+      <h2 style="font-family:var(--font-sans); font-size:1.5rem; margin-bottom:var(--spacing-sm);">Your cart is currently empty</h2>
+      <p style="color:var(--text-secondary); margin-bottom:var(--spacing-lg);">Add some premium minimalist items to your bag.</p>
+      <a href="shop.html" class="btn btn-primary">Go to Shop</a>
+    </div>
+
+    <!-- Active cart layout -->
+    <div class="cart-layout" id="active-cart-layout">
+      <!-- Left: Line items -->
+      <div class="cart-table-card">
+        <div class="cart-table-header">
+          <span>Product</span>
+          <span>Price</span>
+          <span>Quantity</span>
+          <span style="text-align:right;">Subtotal</span>
+        </div>
+        
+        <div class="cart-table-rows" id="cart-items-container">
+          <!-- Rows will be injected dynamically -->
+        </div>
+      </div>
+
+      <!-- Right: Summary details -->
+      <aside class="cart-summary-card">
+        <h3 class="summary-title">Order Summary</h3>
+        
+        <!-- Coupon Form -->
+        <div class="coupon-section">
+          <input type="text" class="form-input" id="coupon-code-input" placeholder="Promo Code" style="padding:0.6rem 0.8rem; font-size:0.85rem;">
+          <button class="btn btn-dark" id="apply-coupon-btn" style="padding:0.6rem 1.2rem; font-size:0.85rem; font-weight:600;">Apply</button>
+        </div>
+        <div id="coupon-alert-msg" style="font-size:0.8rem; display:none; font-weight:500;"></div>
+
+        <!-- Calculations -->
+        <div style="display:flex; flex-direction:column; gap:var(--spacing-sm); border-bottom:1px solid var(--border-color); padding-bottom:var(--spacing-md);">
+          <div class="summary-row">
+            <span>Subtotal:</span>
+            <span id="summary-subtotal">$0.00</span>
+          </div>
+          <div class="summary-row" id="summary-discount-row" style="display:none; color:var(--color-success);">
+            <span>Discount:</span>
+            <span id="summary-discount">-$0.00</span>
+          </div>
+          <div class="summary-row">
+            <span>Shipping:</span>
+            <span id="summary-shipping">$0.00</span>
+          </div>
+          <div class="summary-row">
+            <span>Sales Tax (5%):</span>
+            <span id="summary-tax">$0.00</span>
+          </div>
+        </div>
+
+        <div class="summary-row total">
+          <span>Estimated Total:</span>
+          <span id="summary-total">$0.00</span>
+        </div>
+
+        <a href="checkout.html" class="btn btn-primary text-center" style="width: 100%;">Proceed to Checkout</a>
+        <a href="shop.html" class="text-center" style="font-size: 0.85rem; color: var(--text-secondary); text-decoration: underline; letter-spacing:0.05em; text-transform:uppercase;">Continue Shopping</a>
+      </aside>
+    </div>
+  </main>
+
+  <app-footer></app-footer>
+
+  <script type="module" src="/src/main.js"></script>
+  
+  <script type="module">
+    import { getCart, updateCartQuantity, removeFromCart, getCartTotals, getAppliedCoupon, applyCoupon } from './src/js/store.js';
+    import { trackEvent, formatCartItemsToTracking } from './src/js/tracking.js';
+    import { formatCurrency } from './src/js/utils.js';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Initial render
+      renderCartPage();
+
+      // 2. Setup Coupon listener
+      setupCouponHandler();
+
+      // 3. Track view_cart on initial page load
+      const cart = getCart();
+      if (cart.length > 0) {
+        const totals = getCartTotals();
+        trackEvent('view_cart', {
+          currency: 'USD',
+          value: totals.subtotal,
+          items: formatCartItemsToTracking(cart)
+        });
+      }
+    });
+
+    function renderCartPage() {
+      const cart = getCart();
+      
+      const emptyLayout = document.querySelector('#empty-cart-layout');
+      const activeLayout = document.querySelector('#active-cart-layout');
+      
+      if (cart.length === 0) {
+        if (emptyLayout) emptyLayout.style.display = 'block';
+        if (activeLayout) activeLayout.style.display = 'none';
+        return;
+      }
+
+      if (emptyLayout) emptyLayout.style.display = 'none';
+      if (activeLayout) activeLayout.style.display = 'grid';
+
+      // Render items list
+      const rowsWrap = document.querySelector('#cart-items-container');
+      rowsWrap.innerHTML = cart.map(item => `
+        <div class="cart-row" data-id="${item.id}" data-color="${item.color}" data-size="${item.size}">
+          <div class="cart-product-cell">
+            <img class="cart-product-img" src="${item.image}" alt="${item.title}">
+            <div class="cart-product-info">
+              <a href="product.html?id=${item.id}" class="cart-product-name" style="font-weight:600;">${item.title}</a>
+              <span class="cart-product-meta">Color: ${item.color} | Size: ${item.size}</span>
+            </div>
+          </div>
+          
+          <div class="cart-price-cell">
+            ${formatCurrency(item.price)}
+          </div>
+          
+          <div>
+            <div class="qty-control" style="width:fit-content;">
+              <span class="qty-btn dec-qty-btn">&minus;</span>
+              <span class="qty-val">${item.quantity}</span>
+              <span class="qty-btn inc-qty-btn">&plus;</span>
+            </div>
+          </div>
+          
+          <div class="cart-price-cell text-right" style="font-weight:600;">
+            ${formatCurrency(item.price * item.quantity)}
+            <button class="remove-cart-item" style="display:inline-block; margin-left:12px; font-size:1.2rem; line-height:1; vertical-align:middle;" title="Remove item">&times;</button>
+          </div>
+        </div>
+      `).join('');
+
+      // Calculations Bind
+      updateCartTotalsUI();
+
+      // Bind buttons actions
+      setupRowInteractions();
+    }
+
+    function updateCartTotalsUI() {
+      const totals = getCartTotals();
+      
+      document.querySelector('#summary-subtotal').textContent = formatCurrency(totals.subtotal);
+      document.querySelector('#summary-shipping').textContent = totals.shipping === 0 ? "FREE" : formatCurrency(totals.shipping);
+      document.querySelector('#summary-tax').textContent = formatCurrency(totals.tax);
+      document.querySelector('#summary-total').textContent = formatCurrency(totals.total);
+
+      // Discount Display
+      const discRow = document.querySelector('#summary-discount-row');
+      const discVal = document.querySelector('#summary-discount');
+      if (totals.discount > 0) {
+        discVal.textContent = `-${formatCurrency(totals.discount)}`;
+        discRow.style.display = 'flex';
+      } else {
+        discRow.style.display = 'none';
+      }
+
+      // Restore active coupon input
+      const coupon = getAppliedCoupon();
+      const input = document.querySelector('#coupon-code-input');
+      const alertMsg = document.querySelector('#coupon-alert-msg');
+      if (coupon) {
+        input.value = coupon;
+        alertMsg.style.display = 'block';
+        alertMsg.style.color = 'var(--color-success)';
+        alertMsg.textContent = `Promo code "${coupon}" is active!`;
+      }
+    }
+
+    function setupRowInteractions() {
+      const cart = getCart();
+
+      document.querySelectorAll('.cart-row').forEach(row => {
+        const id = parseInt(row.getAttribute('data-id'));
+        const color = row.getAttribute('data-color');
+        const size = row.getAttribute('data-size');
+        const currentItem = cart.find(i => i.id === id && i.color === color && i.size === size);
+
+        // Decrement Quantity
+        row.querySelector('.dec-qty-btn').addEventListener('click', () => {
+          const res = updateCartQuantity(id, color, size, currentItem.quantity - 1);
+          if (res) {
+            if (res.removed) {
+              window.dispatchEvent(new CustomEvent('show-toast', {
+                detail: { message: `Removed "${res.item.title}" from cart.`, type: 'info' }
+              }));
+              // Track remove_from_cart
+              trackEvent('remove_from_cart', {
+                currency: 'USD',
+                value: res.item.price,
+                items: formatCartItemsToTracking([res.item])
+              });
+            } else {
+              // Decrement quantity is tracking event of remove_from_cart with qty 1
+              trackEvent('remove_from_cart', {
+                currency: 'USD',
+                value: currentItem.price,
+                items: formatCartItemsToTracking([{ ...currentItem, quantity: 1 }])
+              });
+            }
+            renderCartPage();
+          }
+        });
+
+        // Increment Quantity
+        row.querySelector('.inc-qty-btn').addEventListener('click', () => {
+          const res = updateCartQuantity(id, color, size, currentItem.quantity + 1);
+          if (res) {
+            // Track add_to_cart for quantity increment
+            trackEvent('add_to_cart', {
+              currency: 'USD',
+              value: currentItem.price,
+              items: formatCartItemsToTracking([{ ...currentItem, quantity: 1 }])
+            });
+            renderCartPage();
+          }
+        });
+
+        // Remove item fully
+        row.querySelector('.remove-cart-item').addEventListener('click', () => {
+          const res = removeFromCart(id, color, size);
+          if (res) {
+            window.dispatchEvent(new CustomEvent('show-toast', {
+              detail: { message: `Removed "${res.item.title}" from cart.`, type: 'info' }
+            }));
+            
+            // Track remove_from_cart event
+            trackEvent('remove_from_cart', {
+              currency: 'USD',
+              value: res.item.price * res.item.quantity,
+              items: formatCartItemsToTracking([res.item])
+            });
+            renderCartPage();
+          }
+        });
+      });
+    }
+
+    function setupCouponHandler() {
+      const input = document.querySelector('#coupon-code-input');
+      const btn = document.querySelector('#apply-coupon-btn');
+      const alertMsg = document.querySelector('#coupon-alert-msg');
+
+      btn.addEventListener('click', () => {
+        const code = input.value.trim();
+        
+        const res = applyCoupon(code);
+        alertMsg.style.display = 'block';
+        
+        if (res.success) {
+          alertMsg.style.color = 'var(--color-success)';
+          alertMsg.textContent = res.message;
+          window.dispatchEvent(new CustomEvent('show-toast', {
+            detail: { message: res.message, type: 'success' }
+          }));
+          updateCartTotalsUI();
+          renderCartPage();
+        } else {
+          alertMsg.style.color = 'var(--color-error)';
+          alertMsg.textContent = res.message;
+          window.dispatchEvent(new CustomEvent('show-toast', {
+            detail: { message: res.message, type: 'error' }
+          }));
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>

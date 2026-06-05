@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Product Details | Aura Wear</title>
+  <meta name="description" content="View details, specs, customer reviews, and sizing for this premium capsule garment.">
+  <link rel="canonical" href="./assets/product-Z5oyCl6M.html">
+  <script type="module" crossorigin src="./assets/product-D3rGqsyW.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/main-jt3pKJ0m.js">
+  <link rel="modulepreload" crossorigin href="./assets/orders-20HZuKR2.js">
+  <link rel="stylesheet" crossorigin href="./assets/main-CF5AIB16.css">
+</head>
+<body>
+
+  <app-header></app-header>
+
+  <main class="container section">
+    <!-- Breadcrumbs -->
+    <div style="font-size:0.85rem; color:var(--text-muted); margin-bottom: var(--spacing-lg); text-transform:uppercase; letter-spacing:0.05em;">
+      <a href="index.html" style="color:inherit;">Home</a> / 
+      <a href="shop.html" style="color:inherit;">Shop</a> / 
+      <span id="breadcrumb-category" style="color:var(--text-primary);">Category</span> / 
+      <span id="breadcrumb-title" style="color:var(--text-muted);">Product</span>
+    </div>
+
+    <!-- Product Split Details Grid -->
+    <div class="product-detail-grid">
+      <!-- Left side: Images gallery -->
+      <div class="product-gallery-wrap">
+        <div class="product-gallery-main">
+          <img id="main-product-img" src="" alt="Product Main Image">
+        </div>
+        <div class="product-gallery-thumbs" id="product-thumbnails-container">
+          <!-- Thumbnail buttons populated dynamically -->
+        </div>
+      </div>
+
+      <!-- Right side: Info details -->
+      <div class="product-detail-info">
+        <div class="product-meta-top">
+          <span class="badge badge-gold" id="product-info-category">Category</span>
+          <span class="text-muted" style="font-size:0.85rem;" id="product-info-sku">SKU: N/A</span>
+        </div>
+
+        <h1 class="product-detail-title" id="product-info-title">Product Title</h1>
+        
+        <div class="product-rating" id="product-info-rating-wrap" style="margin-bottom:var(--spacing-md); font-size:1rem;">
+          <!-- Stars -->
+        </div>
+
+        <div class="product-detail-price-wrap">
+          <div id="product-info-price-container">
+            <!-- Price and sale details -->
+          </div>
+          <div class="stock-indicator" id="product-info-stock">
+            <!-- Stock alert -->
+          </div>
+        </div>
+
+        <p class="product-detail-desc" id="product-info-desc">
+          Detailed overview of the material and texture, design elements, fit profile, and recommended wash instructions.
+        </p>
+
+        <!-- Variants controls -->
+        <div class="product-options-wrap">
+          <!-- Colors -->
+          <div>
+            <span class="form-label" style="margin-bottom: var(--spacing-sm);">Select Color: <span id="selected-color-name" style="color:var(--text-primary); font-weight:600;">None</span></span>
+            <div class="swatch-color-list" id="detail-color-list">
+              <!-- Colors Swatches -->
+            </div>
+          </div>
+
+          <!-- Sizes -->
+          <div>
+            <span class="form-label" style="margin-bottom: var(--spacing-sm);">Select Size: <span id="selected-size-name" style="color:var(--text-primary); font-weight:600;">None</span></span>
+            <div class="swatch-size-list" id="detail-size-list">
+              <!-- Size pills -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Add Actions -->
+        <div class="product-actions-bar">
+          <div class="detail-qty-control">
+            <button class="detail-qty-btn" id="qty-dec">&minus;</button>
+            <span class="detail-qty-val" id="qty-val">1</span>
+            <button class="detail-qty-btn" id="qty-inc">&plus;</button>
+          </div>
+          <button class="btn btn-primary" id="add-to-cart-btn" style="flex-grow:1; display:flex; gap:8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
+            Add To Cart
+          </button>
+          <button class="btn btn-secondary" id="wishlist-toggle-btn" style="padding: 0.85rem;" title="Add to Wishlist">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Related Products -->
+    <section class="section" style="border-top:1px solid var(--border-color); margin-top:var(--spacing-xxl);">
+      <div class="section-title-wrap" style="text-align:left;">
+        <span class="section-subtitle">Complete The Look</span>
+        <h2 class="section-title" style="font-size:2rem;">Related Collection Items</h2>
+      </div>
+      <div class="grid grid-4" id="related-products-grid">
+        <!-- Dyn contents -->
+      </div>
+    </section>
+
+    <!-- Cross-Sell / Upsell Slider -->
+    <section class="section" style="border-top:1px solid var(--border-color); padding-top:var(--spacing-xl);">
+      <div class="section-title-wrap" style="text-align:left;">
+        <span class="section-subtitle">Recommended For You</span>
+        <h2 class="section-title" style="font-size:2rem;">Suggested Upsell Products</h2>
+      </div>
+      <div class="grid grid-4" id="upsell-products-grid">
+        <!-- Dyn contents -->
+      </div>
+    </section>
+
+    <!-- Recently Viewed Products -->
+    <section class="section" id="recently-viewed-section" style="border-top:1px solid var(--border-color); padding-top:var(--spacing-xl); display:none;">
+      <div class="section-title-wrap" style="text-align:left;">
+        <span class="section-subtitle">History</span>
+        <h2 class="section-title" style="font-size:2rem;">Recently Viewed Styles</h2>
+      </div>
+      <div class="grid grid-4" id="recently-viewed-grid">
+        <!-- Dyn contents -->
+      </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section class="section" style="border-top:1px solid var(--border-color); padding-top:var(--spacing-xl);">
+      <div class="section-title-wrap" style="text-align:left;">
+        <span class="section-subtitle">Feedback</span>
+        <h2 class="section-title" style="font-size:2rem;">Customer Reviews</h2>
+      </div>
+      
+      <div class="grid grid-2" style="align-items:flex-start;">
+        <!-- Left: average breakdown -->
+        <div class="glass-panel" style="padding:var(--spacing-lg); display:flex; gap:var(--spacing-lg); align-items:center;">
+          <div style="text-align:center; flex-shrink:0;">
+            <div style="font-size:3.5rem; font-weight:700; color:var(--accent-gold); font-family:var(--font-display);" id="review-avg-big">0.0</div>
+            <div class="product-rating" id="review-stars-big" style="font-size:0.9rem; justify-content:center;"></div>
+            <div style="font-size:0.8rem; color:var(--text-secondary); margin-top:4px;"><span id="review-count-big">0</span> reviews</div>
+          </div>
+          <div style="flex-grow:1; display:flex; flex-direction:column; gap:4px; font-size:0.85rem;">
+            <div class="flex align-center gap-sm"><span>5★</span><div style="flex-grow:1; height:6px; background:#222; border-radius:3px; overflow:hidden;"><div style="width:85%; height:100%; background:var(--accent-gold);"></div></div><span>85%</span></div>
+            <div class="flex align-center gap-sm"><span>4★</span><div style="flex-grow:1; height:6px; background:#222; border-radius:3px; overflow:hidden;"><div style="width:10%; height:100%; background:var(--accent-gold);"></div></div><span>10%</span></div>
+            <div class="flex align-center gap-sm"><span>3★</span><div style="flex-grow:1; height:6px; background:#222; border-radius:3px; overflow:hidden;"><div style="width:5%; height:100%; background:var(--accent-gold);"></div></div><span>5%</span></div>
+            <div class="flex align-center gap-sm"><span>2★</span><div style="flex-grow:1; height:6px; background:#222; border-radius:3px; overflow:hidden;"><div style="width:0%; height:100%; background:var(--accent-gold);"></div></div><span>0%</span></div>
+            <div class="flex align-center gap-sm"><span>1★</span><div style="flex-grow:1; height:6px; background:#222; border-radius:3px; overflow:hidden;"><div style="width:0%; height:100%; background:var(--accent-gold);"></div></div><span>0%</span></div>
+          </div>
+        </div>
+        
+        <!-- Right: list -->
+        <div style="display:flex; flex-direction:column; gap:var(--spacing-md);" id="product-reviews-list-container">
+          <!-- Reviews list -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <app-footer></app-footer>
+
+  
+
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Customer Dashboard | Aura Wear</title>
+  <meta name="description" content="View your order history, edit shipping addresses, check loyalty points, and update settings.">
+  <link rel="canonical" href="./assets/dashboard-B1oEr9pu.html">
+  <script type="module" crossorigin src="./assets/dashboard-BafyALB_.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/main-jt3pKJ0m.js">
+  <link rel="stylesheet" crossorigin href="./assets/main-CF5AIB16.css">
+</head>
+<body>
+
+  <app-header></app-header>
+
+  <main class="container section">
+    <div class="section-title-wrap" style="text-align: left; margin-bottom: var(--spacing-xl);">
+      <span class="section-subtitle">Account</span>
+      <h1 class="section-title" style="margin-bottom: 0;">Welcome, <span id="welcome-name">Client</span></h1>
+    </div>
+
+    <div class="dashboard-layout">
+      <!-- Sidebar Nav links -->
+      <aside class="dashboard-nav-card">
+        <ul class="dashboard-nav-list">
+          <li class="dashboard-nav-item active" data-panel="overview">Account Overview</li>
+          <li class="dashboard-nav-item" data-panel="orders">Order History</li>
+          <li class="dashboard-nav-item" data-panel="profile">Edit Profile</li>
+          <li class="dashboard-nav-item" id="dashboard-logout-btn" style="color:var(--color-error); margin-top:var(--spacing-md); border-top:1px solid var(--border-color); padding-top:var(--spacing-md);">Log Out</li>
+        </ul>
+      </aside>
+
+      <!-- Main panels area -->
+      <div>
+        <!-- Panel 1: Overview -->
+        <div class="dashboard-content-panel active" id="panel-overview">
+          <h2 style="font-size:1.4rem; margin-bottom:var(--spacing-md); font-family:var(--font-sans); font-weight:600;">Overview</h2>
+          
+          <div class="grid grid-2" style="margin-bottom:var(--spacing-lg);">
+            <div class="glass-panel" style="padding:var(--spacing-md);">
+              <span class="text-muted" style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.05em;">Client Tier</span>
+              <div style="font-size:1.8rem; font-weight:700; color:var(--accent-gold); font-family:var(--font-sans); margin-top:4px;" id="dashboard-client-tier">VIP Tier</div>
+              <p style="font-size:0.8rem; color:var(--text-secondary); margin-top:8px;">You receive complimentary express shipping and early access to drops.</p>
+            </div>
+            
+            <div class="glass-panel" style="padding:var(--spacing-md);">
+              <span class="text-muted" style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.05em;">Total Orders Placed</span>
+              <div style="font-size:1.8rem; font-weight:700; color:var(--text-primary); font-family:var(--font-sans); margin-top:4px;" id="dashboard-orders-count">0</div>
+              <p style="font-size:0.8rem; color:var(--text-secondary); margin-top:8px;">Browse your catalog orders history and track processing status.</p>
+            </div>
+          </div>
+
+          <div class="glass-panel" style="padding:var(--spacing-lg);">
+            <h3 style="font-size:1.1rem; margin-bottom:var(--spacing-md); text-transform:uppercase; letter-spacing:0.05em;">Shipping Details</h3>
+            <div style="font-size:0.9rem; line-height:1.7; color:var(--text-secondary);" id="dashboard-address-block">
+              <!-- Address -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel 2: Order History -->
+        <div class="dashboard-content-panel" id="panel-orders">
+          <h2 style="font-size:1.4rem; margin-bottom:var(--spacing-md); font-family:var(--font-sans); font-weight:600;">Order History</h2>
+          
+          <div id="no-orders-msg" style="display:none; text-align:center; padding:var(--spacing-xl) 0; color:var(--text-muted);">
+            <p>You have not placed any orders yet.</p>
+            <a href="shop.html" class="btn btn-secondary" style="margin-top:var(--spacing-sm); padding:0.5rem 1rem; font-size:0.8rem;">Browse Catalog</a>
+          </div>
+
+          <div style="overflow-x:auto;" id="orders-table-wrap">
+            <table class="order-history-table">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Date</th>
+                  <th>Total</th>
+                  <th>Items</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="orders-table-body">
+                <!-- Orders -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Panel 3: Edit Profile -->
+        <div class="dashboard-content-panel" id="panel-profile">
+          <h2 style="font-size:1.4rem; margin-bottom:var(--spacing-md); font-family:var(--font-sans); font-weight:600;">Edit Profile</h2>
+          <p class="text-muted" style="font-size:0.85rem; margin-bottom:var(--spacing-lg);">Update your shipping information and primary contact phone numbers.</p>
+          
+          <form id="profile-edit-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="prof-first-name">First Name</label>
+                <input type="text" class="form-input" id="prof-first-name" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="prof-last-name">Last Name</label>
+                <input type="text" class="form-input" id="prof-last-name" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="prof-phone">Phone Number</label>
+              <input type="tel" class="form-input" id="prof-phone" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="prof-address">Street Address</label>
+              <input type="text" class="form-input" id="prof-address">
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="prof-city">City</label>
+                <input type="text" class="form-input" id="prof-city">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="prof-state">State / Province</label>
+                <input type="text" class="form-input" id="prof-state">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="prof-zip">Zip / Postal Code</label>
+                <input type="text" class="form-input" id="prof-zip">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="prof-country">Country</label>
+                <select class="form-input" id="prof-country">
+                  <option value="US">United States</option>
+                  <option value="CA">Canada</option>
+                  <option value="GB">United Kingdom</option>
+                </select>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="margin-top:var(--spacing-sm);">Save Profile Changes</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <app-footer></app-footer>
+
+  
+
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Contact Us | Aura Wear</title>
+  <meta name="description" content="Reach our client services team. Send us comments, wholesale inquiries, or press details.">
+  <link rel="canonical" href="contact.html">
+</head>
+<body>
+
+  <app-header></app-header>
+
+  <main class="container section">
+    <div class="section-title-wrap" style="text-align: center; margin-bottom: var(--spacing-xxl);">
+      <span class="section-subtitle">Reach Out</span>
+      <h1 class="section-title" style="font-size:3rem;">Contact Us</h1>
+    </div>
+
+    <div class="grid grid-2" style="gap:var(--spacing-xxl); align-items:flex-start;">
+      <!-- Left: Form -->
+      <div class="glass-panel" style="padding:var(--spacing-xl);">
+        <h2 style="font-size:1.4rem; margin-bottom:var(--spacing-md); font-family:var(--font-sans); font-weight:600;">Send A Message</h2>
+        <p class="text-muted" style="font-size:0.85rem; margin-bottom:var(--spacing-lg);">Our team responds within 24 business hours.</p>
+        
+        <form id="contact-form">
+          <div class="form-group">
+            <label class="form-label" for="con-name">Full Name *</label>
+            <input type="text" class="form-input" id="con-name" required autocomplete="name">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="con-email">Email Address *</label>
+            <input type="email" class="form-input" id="con-email" required autocomplete="email">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="con-subject">Subject *</label>
+            <input type="text" class="form-input" id="con-subject" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="con-message">Message *</label>
+            <textarea class="form-input" id="con-message" rows="5" required style="resize:vertical;"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%;">Submit Inquiry</button>
+        </form>
+        
+        <div id="contact-success" style="display:none; text-align:center; padding: var(--spacing-md) 0; color: var(--color-success); font-weight:600;">
+          Thank you! Your inquiry has been sent successfully. We will email you shortly.
+        </div>
+      </div>
+
+      <!-- Right: Details -->
+      <div>
+        <h2 style="font-size:1.4rem; margin-bottom:var(--spacing-md); font-family:var(--font-sans); font-weight:600;">Corporate Office</h2>
+        
+        <div style="font-size:0.95rem; color:var(--text-secondary); display:flex; flex-direction:column; gap:var(--spacing-md); line-height:1.7;">
+          <p>
+            <strong>Aura Wear HQ</strong><br>
+            48 Mercer Street<br>
+            SoHo, New York, NY 10013
+          </p>
+          <p>
+            <strong>Client Services:</strong><br>
+            Email: <a href="mailto:care@aurawear-store.com" style="color:var(--accent-gold); text-decoration:underline;">care@aurawear-store.com</a><br>
+            Tel: +1 (800) 555-AURA (9:00 AM - 5:00 PM EST)
+          </p>
+          <p>
+            <strong>Partnerships & Wholesale:</strong><br>
+            Email: <a href="mailto:wholesale@aurawear-store.com" style="color:var(--accent-gold); text-decoration:underline;">wholesale@aurawear-store.com</a>
+          </p>
+        </div>
+
+        <div style="margin-top:var(--spacing-xl); height:220px; border-radius:var(--radius-sm); border:1px solid var(--border-color); overflow:hidden; background-image:url('https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=400'); background-size:cover; background-position:center; position:relative;">
+          <div style="position:absolute; bottom:12px; left:12px; background:rgba(0,0,0,0.85); padding:4px 8px; border-radius:2px; font-size:0.75rem; font-weight:500; border:1px solid var(--border-color);">Showroom SoHo, NY</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <app-footer></app-footer>
+
+  <script type="module" src="/src/main.js"></script>
+  
+  <script type="module">
+    import { trackEvent } from './src/js/tracking.js';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.querySelector('#contact-form');
+      const success = document.querySelector('#contact-success');
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const name = document.querySelector('#con-name').value.trim();
+        const email = document.querySelector('#con-email').value.trim();
+        const subject = document.querySelector('#con-subject').value.trim();
+        const message = document.querySelector('#con-message').value.trim();
+
+        if (name && email && subject && message) {
+          // Track contact form submit in Data Layer
+          trackEvent('contact_form_submit', {
+            form_id: 'general_contact_form',
+            form_name: 'General Contact Inquiry',
+            lead_email: email,
+            subject: subject
+          });
+
+          // Track lead generation
+          trackEvent('generate_lead', {
+            lead_source: 'contact_form',
+            email_address: email
+          });
+
+          form.style.display = 'none';
+          success.style.display = 'block';
+
+          window.dispatchEvent(new CustomEvent('show-toast', {
+            detail: { message: "Inquiry received. Thank you!", type: 'success' }
+          }));
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

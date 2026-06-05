@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Aura Wear | Admin Portal</title>
+  <meta name="description" content="Manage store inventory, audit client purchase records, and monitor Conversion API payloads.">
+  <link rel="robots" content="noindex, nofollow">
+  <script type="module" crossorigin src="./assets/admin-DYkGhteN.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/main-jt3pKJ0m.js">
+  <link rel="modulepreload" crossorigin href="./assets/orders-20HZuKR2.js">
+  <link rel="stylesheet" crossorigin href="./assets/main-CF5AIB16.css">
+</head>
+<body>
+
+  <app-header></app-header>
+
+  <main class="container section">
+    <div class="section-title-wrap" style="text-align: left; margin-bottom: var(--spacing-xl);">
+      <span class="section-subtitle">Store Operations</span>
+      <h1 class="section-title" style="margin-bottom: 0;">Admin Dashboard</h1>
+    </div>
+
+    <!-- KPIs Metrics Grid -->
+    <div class="grid grid-4" style="margin-bottom: var(--spacing-xxl);">
+      <div class="glass-panel" style="padding: var(--spacing-md);">
+        <span class="text-muted" style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.05em;">Gross Revenue</span>
+        <div style="font-size:1.8rem; font-weight:700; color:var(--accent-gold); font-family:var(--font-sans); margin-top:4px;" id="kpi-revenue">$0.00</div>
+      </div>
+      <div class="glass-panel" style="padding: var(--spacing-md);">
+        <span class="text-muted" style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.05em;">Total Transactions</span>
+        <div style="font-size:1.8rem; font-weight:700; color:#fff; font-family:var(--font-sans); margin-top:4px;" id="kpi-orders">0</div>
+      </div>
+      <div class="glass-panel" style="padding: var(--spacing-md);">
+        <span class="text-muted" style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.05em;">Average Order Value</span>
+        <div style="font-size:1.8rem; font-weight:700; color:#fff; font-family:var(--font-sans); margin-top:4px;" id="kpi-aov">$0.00</div>
+      </div>
+      <div class="glass-panel" style="padding: var(--spacing-md);">
+        <span class="text-muted" style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.05em;">Depleted Items</span>
+        <div style="font-size:1.8rem; font-weight:700; color:var(--color-error); font-family:var(--font-sans); margin-top:4px;" id="kpi-depleted">0</div>
+      </div>
+    </div>
+
+    <!-- Layout: Tabs or Split panels -->
+    <div class="dashboard-layout">
+      <!-- Admin Menu -->
+      <aside class="dashboard-nav-card">
+        <ul class="dashboard-nav-list">
+          <li class="dashboard-nav-item active" data-panel="admin-inventory">Stock & Inventory</li>
+          <li class="dashboard-nav-item" data-panel="admin-orders">Sales Orders</li>
+          <li class="dashboard-nav-item" data-panel="admin-users">Client Directory</li>
+          <li class="dashboard-nav-item" data-panel="admin-tracking">GTM Tracking Settings</li>
+        </ul>
+      </aside>
+
+      <!-- Panel displays -->
+      <div>
+        <!-- Panel 1: Inventory Override Management -->
+        <div class="dashboard-content-panel active" id="panel-admin-inventory">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--spacing-md);">
+            <h2 style="font-size:1.3rem; font-family:var(--font-sans); font-weight:600;">Inventory Manager</h2>
+            <button class="btn btn-secondary" id="reset-inventory-btn" style="padding: 0.4rem 0.8rem; font-size: 0.75rem;">Reset All To Default</button>
+          </div>
+          <p class="text-muted" style="font-size:0.85rem; margin-bottom:var(--spacing-lg);">Edit current stock levels to simulate Low Stock warnings or Sold Out behaviors in shop product details.</p>
+          
+          <div style="overflow-x:auto;">
+            <table class="order-history-table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>SKU</th>
+                  <th>Base Stock</th>
+                  <th>Current Stock</th>
+                  <th style="width:140px; text-align:right;">Edit Stock</th>
+                </tr>
+              </thead>
+              <tbody id="inventory-table-body">
+                <!-- Dyn lines -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Panel 2: Orders Audit -->
+        <div class="dashboard-content-panel" id="panel-admin-orders">
+          <h2 style="font-size:1.3rem; margin-bottom:var(--spacing-md); font-family:var(--font-sans); font-weight:600;">Sales Orders</h2>
+          <p class="text-muted" style="font-size:0.85rem; margin-bottom:var(--spacing-lg);">List of all placed orders (guests and registered clients).</p>
+          
+          <div id="no-admin-orders" style="display:none; text-align:center; padding:var(--spacing-xl) 0; color:var(--text-muted);">
+            No orders have been placed on this site yet.
+          </div>
+
+          <div style="overflow-x:auto;" id="admin-orders-table-wrap">
+            <table class="order-history-table">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Date</th>
+                  <th>Customer</th>
+                  <th>Items</th>
+                  <th>Total</th>
+                  <th>Payment</th>
+                </tr>
+              </thead>
+              <tbody id="admin-orders-body">
+                <!-- Dyn orders -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Panel 3: Users Audit -->
+        <div class="dashboard-content-panel" id="panel-admin-users">
+          <h2 style="font-size:1.3rem; margin-bottom:var(--spacing-md); font-family:var(--font-sans); font-weight:600;">Client Directory</h2>
+          <p class="text-muted" style="font-size:0.85rem; margin-bottom:var(--spacing-lg);">Registered client accounts currently stored in local database.</p>
+          
+          <div style="overflow-x:auto;">
+            <table class="order-history-table">
+              <thead>
+                <tr>
+                  <th>User ID</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Location</th>
+                  <th>Type</th>
+                </tr>
+              </thead>
+              <tbody id="admin-users-body">
+                <!-- Dyn users -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Panel 4: GTM Tracking Configuration -->
+        <div class="dashboard-content-panel" id="panel-admin-tracking">
+          <h2 style="font-size:1.3rem; margin-bottom:var(--spacing-md); font-family:var(--font-sans); font-weight:600;">Google Tag Manager (GTM) Settings</h2>
+          <p class="text-muted" style="font-size:0.85rem; margin-bottom:var(--spacing-lg);">Configure dynamic injection of your GTM container script globally across all e-commerce pages without editing code.</p>
+          
+          <form id="gtm-config-form" style="max-width:480px;">
+            <div class="form-group" style="display:flex; align-items:center; gap:var(--spacing-md); margin-bottom:var(--spacing-md);">
+              <input type="checkbox" id="gtm-enabled-checkbox" style="width:20px; height:20px; accent-color:var(--accent-gold); cursor:pointer;">
+              <label for="gtm-enabled-checkbox" style="font-weight:600; cursor:pointer; user-select:none; text-transform:none; letter-spacing:0.05em; font-size:0.85rem; color:var(--text-secondary);">Enable GTM Script Injection</label>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label" for="gtm-id-input">GTM Container ID</label>
+              <input type="text" class="form-input" id="gtm-id-input" placeholder="GTM-XXXXXX" pattern="[gG][tT][mM]-[a-zA-Z0-9]{4,10}">
+              <span class="text-muted" style="font-size:0.75rem; margin-top:4px; display:block;">Enter your standard Google Tag Manager ID (e.g., GTM-NK8X9SZ).</span>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" style="margin-top:var(--spacing-sm);">Save Tracking Configuration</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <app-footer></app-footer>
+
+  
+
+</body>
+</html>
