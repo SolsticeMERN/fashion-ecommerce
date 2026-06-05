@@ -23,7 +23,7 @@ export const PRODUCTS = [
       ],
       sizes: ["XS", "S", "M", "L", "XL"]
     },
-    inventory: 12,
+    inventory: 999,
     relatedProducts: [2, 6, 8],
     crossSellProducts: [9, 10],
     upsellProducts: [7],
@@ -55,7 +55,7 @@ export const PRODUCTS = [
       ],
       sizes: ["S", "M", "L", "XL", "XXL"]
     },
-    inventory: 5,
+    inventory: 999,
     relatedProducts: [7, 12, 14],
     crossSellProducts: [11, 15],
     upsellProducts: [1],
@@ -88,7 +88,7 @@ export const PRODUCTS = [
       ],
       sizes: ["XS", "S", "M", "L"]
     },
-    inventory: 18,
+    inventory: 999,
     relatedProducts: [6, 9, 13],
     crossSellProducts: [9, 10],
     upsellProducts: [1],
@@ -120,7 +120,7 @@ export const PRODUCTS = [
       ],
       sizes: ["S", "M", "L", "XL", "XXL"]
     },
-    inventory: 24,
+    inventory: 999,
     relatedProducts: [5, 14],
     crossSellProducts: [11],
     upsellProducts: [12],
@@ -150,7 +150,7 @@ export const PRODUCTS = [
       ],
       sizes: ["28", "30", "32", "34", "36"]
     },
-    inventory: 15,
+    inventory: 999,
     relatedProducts: [4, 14, 7],
     crossSellProducts: [11],
     upsellProducts: [2],
@@ -180,7 +180,7 @@ export const PRODUCTS = [
       ],
       sizes: ["XS", "S", "M", "L"]
     },
-    inventory: 3, // Low stock simulation
+    inventory: 999,
     relatedProducts: [3, 8, 9],
     crossSellProducts: [10],
     upsellProducts: [1],
@@ -211,7 +211,7 @@ export const PRODUCTS = [
       ],
       sizes: ["8", "9", "10", "11", "12"]
     },
-    inventory: 8,
+    inventory: 999,
     relatedProducts: [2, 12, 14],
     crossSellProducts: [15],
     upsellProducts: [2],
@@ -241,7 +241,7 @@ export const PRODUCTS = [
       ],
       sizes: ["S", "M", "L", "XL"]
     },
-    inventory: 10,
+    inventory: 999,
     relatedProducts: [1, 6, 13],
     crossSellProducts: [10],
     upsellProducts: [1],
@@ -270,7 +270,7 @@ export const PRODUCTS = [
       ],
       sizes: ["One Size (18\")"]
     },
-    inventory: 35,
+    inventory: 999,
     relatedProducts: [3, 10, 13],
     crossSellProducts: [10, 3],
     upsellProducts: [3],
@@ -301,7 +301,7 @@ export const PRODUCTS = [
       ],
       sizes: ["Medium"]
     },
-    inventory: 7,
+    inventory: 999,
     relatedProducts: [1, 3, 8],
     crossSellProducts: [9, 15],
     upsellProducts: [1],
@@ -331,7 +331,7 @@ export const PRODUCTS = [
       ],
       sizes: ["Standard"]
     },
-    inventory: 40,
+    inventory: 999,
     relatedProducts: [2, 4, 5],
     crossSellProducts: [4],
     upsellProducts: [2],
@@ -361,7 +361,7 @@ export const PRODUCTS = [
       ],
       sizes: ["38R", "40R", "42R", "44R"]
     },
-    inventory: 9,
+    inventory: 999,
     relatedProducts: [2, 7, 14],
     crossSellProducts: [15],
     upsellProducts: [7],
@@ -391,7 +391,7 @@ export const PRODUCTS = [
       ],
       sizes: ["0", "2", "4", "6", "8", "10"]
     },
-    inventory: 14,
+    inventory: 999,
     relatedProducts: [1, 3, 8],
     crossSellProducts: [9, 10],
     upsellProducts: [1],
@@ -422,7 +422,7 @@ export const PRODUCTS = [
       ],
       sizes: ["S", "M", "L", "XL"]
     },
-    inventory: 18,
+    inventory: 999,
     relatedProducts: [2, 4, 7],
     crossSellProducts: [15],
     upsellProducts: [12],
@@ -453,7 +453,7 @@ export const PRODUCTS = [
       ],
       sizes: ["One Size"]
     },
-    inventory: 22,
+    inventory: 999,
     relatedProducts: [1, 2, 8],
     crossSellProducts: [10],
     upsellProducts: [1],
