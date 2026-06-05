@@ -221,7 +221,7 @@ export async function trackEvent(eventName, eventData = {}) {
   if (eventName === 'purchase') {
     purchaseObj = {
       transaction_id: eventData.transaction_id,
-      order_id: orderId => eventData.order_id,
+      order_id: eventData.order_id,
       order_status: "Processing",
       payment_status: "Pending",
       payment_method: eventData.payment_method,

@@ -100,6 +100,7 @@
         const purchasePayload = {
           transaction_id: order.transaction_id,
           order_id: order.order_id,
+          billing: order.billing, // Exposes name, email, phone for Advanced Matching & EC
           currency: order.currency,
           value: order.value,
           subtotal: order.subtotal,
