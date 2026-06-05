@@ -372,6 +372,28 @@ export async function trackEvent(eventName, eventData = {}) {
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push(dataLayerPushObject);
 
+  // Send only the Purchase event via Meta CAPI from Vercel backend
+  if (eventName === 'purchase') {
+    fetch('/api/meta-capi', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        source: 'purchase_test',
+        timestamp: Date.now(),
+        purchase: window.dataLayer[window.dataLayer.length - 1]
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log('Meta CAPI Test Success:', data);
+    })
+    .catch(err => {
+      console.error('Meta CAPI Test Error:', err);
+    });
+  }
+
   // Save Browser log to Local Storage for Debugger console
   const clientLogs = localStorage.getItem(CLIENT_EVENTS_KEY) 
     ? JSON.parse(localStorage.getItem(CLIENT_EVENTS_KEY)) 
