@@ -61,7 +61,20 @@ export default async function handler(req, res) {
           custom_data: {
             currency: purchase.ecommerce.currency,
             value: purchase.ecommerce.value,
-            order_id: purchase.ecommerce.transaction_id
+
+            content_type: 'product',
+
+            content_ids: purchase.ecommerce.items.map(
+              item => item.item_id
+            ),
+
+            contents: purchase.ecommerce.items.map(item => ({
+              id: item.item_id,
+              quantity: item.quantity,
+              item_price: item.price
+            })),
+
+            order_id: purchase.ecommerce.order_id
           }
         }
       ]
