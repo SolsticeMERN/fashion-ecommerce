@@ -1,6 +1,7 @@
 import { getCart, getCartTotals, clearCart, getAppliedCoupon } from './store.js';
 import { getCurrentUser, addOrderToCurrentUser } from './auth.js';
 import { generateUUID } from './utils.js';
+import { getProductById } from './products.js';
 
 const INVENTORY_OVERRIDES_KEY = 'fashion_inventory_overrides';
 
@@ -20,15 +21,13 @@ export function updateProductInventory(productId, qtyUsed) {
     ? JSON.parse(localStorage.getItem(INVENTORY_OVERRIDES_KEY)) 
     : {};
   
-  // We need to know the default stock from products.js but we can just store the current remaining stock
-  // Let's assume we subtract qtyUsed from current inventory
-  // We'll read the override first, if it doesn't exist, we set it below
   const currentOverride = overrides[productId];
   if (currentOverride !== undefined) {
     overrides[productId] = Math.max(0, currentOverride - qtyUsed);
   } else {
-    // If not overridden, it means we read default. We'll set the overrides during checkout based on the actual items.
-    overrides[productId] = -qtyUsed; // We'll resolve this relative to product.inventory when loaded
+    const product = getProductById(productId);
+    const defaultQty = product ? product.inventory : 999;
+    overrides[productId] = Math.max(0, defaultQty - qtyUsed);
   }
   localStorage.setItem(INVENTORY_OVERRIDES_KEY, JSON.stringify(overrides));
 }
