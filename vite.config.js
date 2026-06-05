@@ -23,7 +23,8 @@ export default defineConfig({
         privacy: resolve(__dirname, 'privacy.html'),
         terms: resolve(__dirname, 'terms.html'),
         shipping: resolve(__dirname, 'shipping.html'),
-        refunds: resolve(__dirname, 'refunds.html')
+        refunds: resolve(__dirname, 'refunds.html'),
+        admin: resolve(__dirname, 'admin.html')
       }
     }
   }

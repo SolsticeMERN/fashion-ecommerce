@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Aura Wear | Admin Portal</title>
+  <meta name="description" content="Manage store inventory, audit client purchase records, and monitor Conversion API payloads.">
+  <link rel="robots" content="noindex, nofollow">
+</head>
+<body>
+
+  <app-header></app-header>
+
+  <main class="container section">
+    <div class="section-title-wrap" style="text-align: left; margin-bottom: var(--spacing-xl);">
+      <span class="section-subtitle">Store Operations</span>
+      <h1 class="section-title" style="margin-bottom: 0;">Admin Dashboard</h1>
+    </div>
+
+    <!-- KPIs Metrics Grid -->
+    <div class="grid grid-4" style="margin-bottom: var(--spacing-xxl);">
+      <div class="glass-panel" style="padding: var(--spacing-md);">
+        <span class="text-muted" style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.05em;">Gross Revenue</span>
+        <div style="font-size:1.8rem; font-weight:700; color:var(--accent-gold); font-family:var(--font-sans); margin-top:4px;" id="kpi-revenue">$0.00</div>
+      </div>
+      <div class="glass-panel" style="padding: var(--spacing-md);">
+        <span class="text-muted" style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.05em;">Total Transactions</span>
+        <div style="font-size:1.8rem; font-weight:700; color:#fff; font-family:var(--font-sans); margin-top:4px;" id="kpi-orders">0</div>
+      </div>
+      <div class="glass-panel" style="padding: var(--spacing-md);">
+        <span class="text-muted" style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.05em;">Average Order Value</span>
+        <div style="font-size:1.8rem; font-weight:700; color:#fff; font-family:var(--font-sans); margin-top:4px;" id="kpi-aov">$0.00</div>
+      </div>
+      <div class="glass-panel" style="padding: var(--spacing-md);">
+        <span class="text-muted" style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.05em;">Depleted Items</span>
+        <div style="font-size:1.8rem; font-weight:700; color:var(--color-error); font-family:var(--font-sans); margin-top:4px;" id="kpi-depleted">0</div>
+      </div>
+    </div>
+
+    <!-- Layout: Tabs or Split panels -->
+    <div class="dashboard-layout">
+      <!-- Admin Menu -->
+      <aside class="dashboard-nav-card">
+        <ul class="dashboard-nav-list">
+          <li class="dashboard-nav-item active" data-panel="admin-inventory">Stock & Inventory</li>
+          <li class="dashboard-nav-item" data-panel="admin-orders">Sales Orders</li>
+          <li class="dashboard-nav-item" data-panel="admin-users">Client Directory</li>
+        </ul>
+      </aside>
+
+      <!-- Panel displays -->
+      <div>
+        <!-- Panel 1: Inventory Override Management -->
+        <div class="dashboard-content-panel active" id="panel-admin-inventory">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--spacing-md);">
+            <h2 style="font-size:1.3rem; font-family:var(--font-sans); font-weight:600;">Inventory Manager</h2>
+            <button class="btn btn-secondary" id="reset-inventory-btn" style="padding: 0.4rem 0.8rem; font-size: 0.75rem;">Reset All To Default</button>
+          </div>
+          <p class="text-muted" style="font-size:0.85rem; margin-bottom:var(--spacing-lg);">Edit current stock levels to simulate Low Stock warnings or Sold Out behaviors in shop product details.</p>
+          
+          <div style="overflow-x:auto;">
+            <table class="order-history-table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>SKU</th>
+                  <th>Base Stock</th>
+                  <th>Current Stock</th>
+                  <th style="width:140px; text-align:right;">Edit Stock</th>
+                </tr>
+              </thead>
+              <tbody id="inventory-table-body">
+                <!-- Dyn lines -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Panel 2: Orders Audit -->
+        <div class="dashboard-content-panel" id="panel-admin-orders">
+          <h2 style="font-size:1.3rem; margin-bottom:var(--spacing-md); font-family:var(--font-sans); font-weight:600;">Sales Orders</h2>
+          <p class="text-muted" style="font-size:0.85rem; margin-bottom:var(--spacing-lg);">List of all placed orders (guests and registered clients).</p>
+          
+          <div id="no-admin-orders" style="display:none; text-align:center; padding:var(--spacing-xl) 0; color:var(--text-muted);">
+            No orders have been placed on this site yet.
+          </div>
+
+          <div style="overflow-x:auto;" id="admin-orders-table-wrap">
+            <table class="order-history-table">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Date</th>
+                  <th>Customer</th>
+                  <th>Items</th>
+                  <th>Total</th>
+                  <th>Payment</th>
+                </tr>
+              </thead>
+              <tbody id="admin-orders-body">
+                <!-- Dyn orders -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Panel 3: Users Audit -->
+        <div class="dashboard-content-panel" id="panel-admin-users">
+          <h2 style="font-size:1.3rem; margin-bottom:var(--spacing-md); font-family:var(--font-sans); font-weight:600;">Client Directory</h2>
+          <p class="text-muted" style="font-size:0.85rem; margin-bottom:var(--spacing-lg);">Registered client accounts currently stored in local database.</p>
+          
+          <div style="overflow-x:auto;">
+            <table class="order-history-table">
+              <thead>
+                <tr>
+                  <th>User ID</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Location</th>
+                  <th>Type</th>
+                </tr>
+              </thead>
+              <tbody id="admin-users-body">
+                <!-- Dyn users -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <app-footer></app-footer>
+
+  <script type="module" src="/src/main.js"></script>
+  
+  <script type="module">
+    import { PRODUCTS } from './src/js/products.js';
+    import { getProductInventory } from './src/js/orders.js';
+    import { formatCurrency } from './src/js/utils.js';
+
+    const INVENTORY_OVERRIDES_KEY = 'fashion_inventory_overrides';
+    const REGISTERED_USERS_KEY = 'fashion_registered_users';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Initialize panels toggling
+      setupPanelToggles();
+
+      // Load analytics KPIs
+      loadKPIs();
+
+      // Render tab datasets
+      renderInventoryTable();
+      renderOrdersTable();
+      renderUsersTable();
+
+      // Reset button
+      document.querySelector('#reset-inventory-btn').addEventListener('click', () => {
+        localStorage.removeItem(INVENTORY_OVERRIDES_KEY);
+        window.dispatchEvent(new CustomEvent('show-toast', {
+          detail: { message: "Inventory overrides reset to default values", type: 'success' }
+        }));
+        renderInventoryTable();
+        loadKPIs();
+      });
+    });
+
+    function setupPanelToggles() {
+      const items = document.querySelectorAll('.dashboard-nav-item[data-panel]');
+      const panels = document.querySelectorAll('.dashboard-content-panel');
+
+      items.forEach(item => {
+        item.addEventListener('click', () => {
+          items.forEach(i => i.classList.remove('active'));
+          panels.forEach(p => p.classList.remove('active'));
+
+          item.classList.add('active');
+          const panelId = `panel-${item.getAttribute('data-panel')}`;
+          document.querySelector(`#${panelId}`).classList.add('active');
+        });
+      });
+    }
+
+    function getAllPlacedOrders() {
+      // 1. Gather guest orders
+      const guestData = localStorage.getItem('fashion_guest_orders');
+      const guests = guestData ? JSON.parse(guestData) : [];
+
+      // 2. Gather user orders
+      const usersData = localStorage.getItem(REGISTERED_USERS_KEY);
+      const users = usersData ? JSON.parse(usersData) : [];
+      
+      const orders = [...guests];
+
+      // Since users records contain history summaries in `.orders`, but the complete billing invoice objects 
+      // are cached in fashion_last_order or guest order pools, we can check if fashion_last_order is already included.
+      const lastOrderData = localStorage.getItem('fashion_last_order');
+      if (lastOrderData) {
+        const lastOrder = JSON.parse(lastOrderData);
+        if (!orders.some(o => o.order_id === lastOrder.order_id)) {
+          orders.push(lastOrder);
+        }
+      }
+
+      // Sort by date/id descending
+      orders.sort((a,b) => b.order_id.localeCompare(a.order_id));
+      return orders;
+    }
+
+    function loadKPIs() {
+      const orders = getAllPlacedOrders();
+      
+      const totalRevenue = orders.reduce((sum, o) => sum + o.value, 0);
+      const totalOrdersCount = orders.length;
+      const aov = totalOrdersCount > 0 ? totalRevenue / totalOrdersCount : 0;
+
+      // Depleted items count
+      let depletedCount = 0;
+      PRODUCTS.forEach(p => {
+        const stock = getProductInventory(p.id, p.inventory);
+        if (stock <= 0) depletedCount++;
+      });
+
+      document.querySelector('#kpi-revenue').textContent = formatCurrency(totalRevenue);
+      document.querySelector('#kpi-orders').textContent = totalOrdersCount;
+      document.querySelector('#kpi-aov').textContent = formatCurrency(aov);
+      document.querySelector('#kpi-depleted').textContent = depletedCount;
+    }
+
+    function renderInventoryTable() {
+      const tbody = document.querySelector('#inventory-table-body');
+      if (!tbody) return;
+
+      tbody.innerHTML = PRODUCTS.map(p => {
+        const currentStock = getProductInventory(p.id, p.inventory);
+        
+        return `
+          <tr>
+            <td style="font-weight:600; color:var(--text-primary);">${p.title}</td>
+            <td style="font-family:monospace; font-size:0.8rem;">${p.sku}</td>
+            <td>${p.inventory}</td>
+            <td>
+              <span class="badge ${currentStock === 0 ? 'badge-sale' : currentStock <= 3 ? 'badge-gold' : 'badge-success'}">
+                ${currentStock} left
+              </span>
+            </td>
+            <td style="text-align:right;">
+              <div class="flex gap-xs justify-center align-center" style="width:140px; margin-left:auto;">
+                <input type="number" class="form-input stock-edit-input" data-id="${p.id}" value="${currentStock}" min="0" style="padding:0.3rem 0.5rem; text-align:center; font-size:0.85rem;">
+                <button class="btn btn-dark save-stock-btn" data-id="${p.id}" style="padding:0.35rem 0.65rem; font-size:0.75rem;">Set</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      // Setup Set buttons
+      tbody.querySelectorAll('.save-stock-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = parseInt(btn.getAttribute('data-id'));
+          const input = tbody.querySelector(`.stock-edit-input[data-id="${id}"]`);
+          const newVal = parseInt(input.value);
+
+          if (isNaN(newVal) || newVal < 0) {
+            window.dispatchEvent(new CustomEvent('show-toast', {
+              detail: { message: "Invalid stock value", type: 'error' }
+            }));
+            return;
+          }
+
+          // Save override
+          const overrides = localStorage.getItem(INVENTORY_OVERRIDES_KEY) 
+            ? JSON.parse(localStorage.getItem(INVENTORY_OVERRIDES_KEY)) 
+            : {};
+          
+          overrides[id] = newVal;
+          localStorage.setItem(INVENTORY_OVERRIDES_KEY, JSON.stringify(overrides));
+
+          window.dispatchEvent(new CustomEvent('show-toast', {
+            detail: { message: `Updated stock level successfully.`, type: 'success' }
+          }));
+
+          renderInventoryTable();
+          loadKPIs();
+        });
+      });
+    }
+
+    function renderOrdersTable() {
+      const tbody = document.querySelector('#admin-orders-body');
+      const wrap = document.querySelector('#admin-orders-table-wrap');
+      const emptyMsg = document.querySelector('#no-admin-orders');
+      
+      const orders = getAllPlacedOrders();
+
+      if (orders.length === 0) {
+        wrap.style.display = 'none';
+        emptyMsg.style.display = 'block';
+        return;
+      }
+
+      wrap.style.display = 'block';
+      emptyMsg.style.display = 'none';
+
+      tbody.innerHTML = orders.map(o => `
+        <tr>
+          <td style="font-family:monospace; font-weight:600; color:var(--text-primary);">${o.order_id}</td>
+          <td>${o.date}</td>
+          <td>
+            <strong>${o.billing.first_name} ${o.billing.last_name}</strong><br>
+            <span class="text-muted" style="font-size:0.8rem;">${o.billing.email}</span>
+          </td>
+          <td>${o.item_count} items</td>
+          <td style="font-weight:600; color:var(--accent-gold);">${formatCurrency(o.value)}</td>
+          <td><span class="badge badge-gold" style="font-size:0.7rem;">${o.payment_method}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    function renderUsersTable() {
+      const tbody = document.querySelector('#admin-users-body');
+      if (!tbody) return;
+
+      const usersData = localStorage.getItem(REGISTERED_USERS_KEY);
+      const users = usersData ? JSON.parse(usersData) : [];
+
+      if (users.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted">No client profiles.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = users.map(u => `
+        <tr>
+          <td style="font-family:monospace; font-size:0.8rem;">${u.customer_id}</td>
+          <td style="font-weight:600; color:var(--text-primary);">${u.customer_first_name} ${u.customer_last_name}</td>
+          <td>${u.customer_email}</td>
+          <td>${u.customer_phone || 'N/A'}</td>
+          <td>${u.customer_city || 'N/A'}, ${u.customer_country}</td>
+          <td><span class="badge ${u.customer_type === 'VIP' ? 'badge-gold' : 'badge-success'}">${u.customer_type}</span></td>
+        </tr>
+      `).join('');
+    }
+  </script>
+
+</body>
+</html>
