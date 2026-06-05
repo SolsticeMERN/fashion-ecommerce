@@ -1,3 +1,13 @@
+import crypto from 'crypto';
+
+function sha256(value) {
+  if (!value) return '';
+  return crypto
+    .createHash('sha256')
+    .update(value.trim().toLowerCase())
+    .digest('hex');
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({
@@ -25,11 +35,23 @@ export default async function handler(req, res) {
 
           user_data: {
             em: purchase.user_data?.email
-              ? [purchase.user_data.email]
+              ? [sha256(purchase.user_data.email)]
               : undefined,
 
             ph: purchase.user_data?.phone
-              ? [purchase.user_data.phone]
+              ? [sha256(purchase.user_data.phone)]
+              : undefined,
+
+            fn: purchase.user_data?.first_name
+              ? [sha256(purchase.user_data.first_name)]
+              : undefined,
+
+            ln: purchase.user_data?.last_name
+              ? [sha256(purchase.user_data.last_name)]
+              : undefined,
+
+            external_id: purchase.user_data?.external_id
+              ? [sha256(purchase.user_data.external_id)]
               : undefined,
 
             fbp: purchase.user_data?.fbp || undefined,
