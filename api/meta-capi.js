@@ -67,6 +67,8 @@ export default async function handler(req, res) {
       ]
     };
 
+    console.log('Payload sent to Meta Graph API (Hashed PII):', JSON.stringify(payload, null, 2));
+
     const response = await fetch(
       `https://graph.facebook.com/v23.0/${pixelId}/events?access_token=${accessToken}`,
       {
