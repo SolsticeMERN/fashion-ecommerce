@@ -1,1 +1,0 @@
-import"./main-yKqtEMRN.js";document.addEventListener("DOMContentLoaded",()=>{const t=document.querySelectorAll(".faq-item");t.forEach(e=>{e.querySelector(".faq-question").addEventListener("click",()=>{const s=e.classList.contains("active");t.forEach(c=>c.classList.remove("active")),s||e.classList.add("active")})})});
