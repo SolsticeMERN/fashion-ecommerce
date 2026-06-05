@@ -12,6 +12,38 @@ import './components/analytics-debugger.js';
 // Import Tracking
 import { initTracking, trackEvent } from './js/tracking.js';
 
+// Auto-inject Google Tag Manager (GTM) Container if configured in Admin Panel
+(function() {
+  const gtmEnabled = localStorage.getItem('tracking_gtm_enabled') === 'true';
+  const gtmId = localStorage.getItem('tracking_gtm_container_id');
+  
+  if (gtmEnabled && gtmId && gtmId.trim().toUpperCase().startsWith('GTM-')) {
+    const cleanId = gtmId.trim().toUpperCase();
+    console.log(`[Aura Wear Tracking] Auto-injecting GTM Container: ${cleanId}`);
+    
+    // 1. Inject GTM Head script
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer',cleanId);
+
+    // 2. Inject GTM Body noscript on DOMContentLoaded
+    document.addEventListener('DOMContentLoaded', () => {
+      const noscript = document.createElement('noscript');
+      const iframe = document.createElement('iframe');
+      iframe.src = `https://www.googletagmanager.com/ns.html?id=${cleanId}`;
+      iframe.height = "0";
+      iframe.width = "0";
+      iframe.style.display = "none";
+      iframe.style.visibility = "hidden";
+      noscript.appendChild(iframe);
+      document.body.insertBefore(noscript, document.body.firstChild);
+    });
+  }
+})();
+
+
 document.addEventListener('DOMContentLoaded', () => {
   // 1. Initialize UTM and Click ID Tracking Cookies
   initTracking();

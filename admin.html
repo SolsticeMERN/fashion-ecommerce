@@ -46,6 +46,7 @@
           <li class="dashboard-nav-item active" data-panel="admin-inventory">Stock & Inventory</li>
           <li class="dashboard-nav-item" data-panel="admin-orders">Sales Orders</li>
           <li class="dashboard-nav-item" data-panel="admin-users">Client Directory</li>
+          <li class="dashboard-nav-item" data-panel="admin-tracking">GTM Tracking Settings</li>
         </ul>
       </aside>
 
@@ -128,6 +129,27 @@
             </table>
           </div>
         </div>
+
+        <!-- Panel 4: GTM Tracking Configuration -->
+        <div class="dashboard-content-panel" id="panel-admin-tracking">
+          <h2 style="font-size:1.3rem; margin-bottom:var(--spacing-md); font-family:var(--font-sans); font-weight:600;">Google Tag Manager (GTM) Settings</h2>
+          <p class="text-muted" style="font-size:0.85rem; margin-bottom:var(--spacing-lg);">Configure dynamic injection of your GTM container script globally across all e-commerce pages without editing code.</p>
+          
+          <form id="gtm-config-form" style="max-width:480px;">
+            <div class="form-group" style="display:flex; align-items:center; gap:var(--spacing-md); margin-bottom:var(--spacing-md);">
+              <input type="checkbox" id="gtm-enabled-checkbox" style="width:20px; height:20px; accent-color:var(--accent-gold); cursor:pointer;">
+              <label for="gtm-enabled-checkbox" style="font-weight:600; cursor:pointer; user-select:none; text-transform:none; letter-spacing:0.05em; font-size:0.85rem; color:var(--text-secondary);">Enable GTM Script Injection</label>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label" for="gtm-id-input">GTM Container ID</label>
+              <input type="text" class="form-input" id="gtm-id-input" placeholder="GTM-XXXXXX" pattern="[gG][tT][mM]-[a-zA-Z0-9]{4,10}">
+              <span class="text-muted" style="font-size:0.75rem; margin-top:4px; display:block;">Enter your standard Google Tag Manager ID (e.g., GTM-NK8X9SZ).</span>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" style="margin-top:var(--spacing-sm);">Save Tracking Configuration</button>
+          </form>
+        </div>
       </div>
     </div>
   </main>
@@ -155,6 +177,7 @@
       renderInventoryTable();
       renderOrdersTable();
       renderUsersTable();
+      renderGtmConfig();
 
       // Reset button
       document.querySelector('#reset-inventory-btn').addEventListener('click', () => {
@@ -341,6 +364,38 @@
           <td><span class="badge ${u.customer_type === 'VIP' ? 'badge-gold' : 'badge-success'}">${u.customer_type}</span></td>
         </tr>
       `).join('');
+    }
+
+    function renderGtmConfig() {
+      const enabled = localStorage.getItem('tracking_gtm_enabled') === 'true';
+      const containerId = localStorage.getItem('tracking_gtm_container_id') || '';
+      
+      document.querySelector('#gtm-enabled-checkbox').checked = enabled;
+      document.querySelector('#gtm-id-input').value = containerId;
+      
+      document.querySelector('#gtm-config-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const newEnabled = document.querySelector('#gtm-enabled-checkbox').checked;
+        const newId = document.querySelector('#gtm-id-input').value.trim().toUpperCase();
+        
+        if (newEnabled && (!newId || !newId.startsWith('GTM-'))) {
+          window.dispatchEvent(new CustomEvent('show-toast', {
+            detail: { message: "Invalid GTM container ID. Must start with GTM-", type: 'error' }
+          }));
+          return;
+        }
+        
+        localStorage.setItem('tracking_gtm_enabled', newEnabled.toString());
+        localStorage.setItem('tracking_gtm_container_id', newId);
+        
+        window.dispatchEvent(new CustomEvent('show-toast', {
+          detail: { message: "GTM configuration saved successfully! Reloading...", type: 'success' }
+        }));
+        
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      });
     }
   </script>
 
