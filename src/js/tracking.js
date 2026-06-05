@@ -372,25 +372,33 @@ export async function trackEvent(eventName, eventData = {}) {
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push(dataLayerPushObject);
 
-  // Send only the Purchase event via Meta CAPI from Vercel backend
-  if (eventName === 'purchase') {
+  // Send funnel events to Meta CAPI via Vercel backend
+  const trackedEventsMap = {
+    'view_item': 'view_content',
+    'add_to_cart': 'add_to_cart',
+    'begin_checkout': 'initiate_checkout',
+    'purchase': 'purchase_test'
+  };
+
+  const capiSource = trackedEventsMap[eventName];
+  if (capiSource) {
     fetch('/api/meta-capi', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        source: 'purchase_test',
+        source: capiSource,
         timestamp: Date.now(),
-        purchase: window.dataLayer[window.dataLayer.length - 1]
+        purchase: dataLayerPushObject
       })
     })
     .then(res => res.json())
     .then(data => {
-      console.log('Meta CAPI Test Success:', data);
+      console.log(`Meta CAPI (${eventName}) Success:`, data);
     })
     .catch(err => {
-      console.error('Meta CAPI Test Error:', err);
+      console.error(`Meta CAPI (${eventName}) Error:`, err);
     });
   }
 
