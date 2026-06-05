@@ -11,11 +11,15 @@ import './components/analytics-debugger.js';
 
 // Import Tracking
 import { initTracking, trackEvent } from './js/tracking.js';
+import { GTM_CONFIG } from '../gtm-config.js';
 
-// Auto-inject Google Tag Manager (GTM) Container if configured in Admin Panel
+// Auto-inject Google Tag Manager (GTM) Container
 (function() {
-  const gtmEnabled = localStorage.getItem('tracking_gtm_enabled') === 'true';
-  const gtmId = localStorage.getItem('tracking_gtm_container_id');
+  const localEnabled = localStorage.getItem('tracking_gtm_enabled');
+  const localId = localStorage.getItem('tracking_gtm_container_id');
+  
+  const gtmEnabled = localEnabled !== null ? localEnabled === 'true' : GTM_CONFIG.enabled;
+  const gtmId = localId || GTM_CONFIG.containerId;
   
   if (gtmEnabled && gtmId && gtmId.trim().toUpperCase().startsWith('GTM-')) {
     const cleanId = gtmId.trim().toUpperCase();
