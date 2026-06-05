@@ -1,4 +1,4 @@
-import{i as p,f as d,j as g,t as c,b as l,k as v,P as m}from"./main-jt3pKJ0m.js";document.addEventListener("DOMContentLoaded",()=>{h(),f(),w()});function h(){const r=document.querySelector("#trending-grid");if(!r)return;const s=m.slice(0,4);r.innerHTML=s.map(t=>{const i=p(t.id),a=t.salePrice!==void 0;return`
+import{i as p,f as d,j as g,t as c,b as l,k as v,P as m}from"./main-yKqtEMRN.js";document.addEventListener("DOMContentLoaded",()=>{h(),f(),w()});function h(){const r=document.querySelector("#trending-grid");if(!r)return;const s=m.slice(0,4);r.innerHTML=s.map(t=>{const i=p(t.id),a=t.salePrice!==void 0;return`
           <div class="product-card" data-id="${t.id}">
             <div class="product-image-container">
               ${a?'<span class="badge badge-sale product-badge">Sale</span>':""}
