@@ -77,7 +77,8 @@ export default async function handler(req, res) {
             order_id: purchase.ecommerce.order_id
           }
         }
-      ]
+      ],
+      test_event_code: 'TEST92485'
     };
 
     console.log('Payload sent to Meta Graph API (Hashed PII):', JSON.stringify(payload, null, 2));
