@@ -382,6 +382,7 @@ export async function trackEvent(eventName, eventData = {}) {
 
   const capiSource = trackedEventsMap[eventName];
   if (capiSource) {
+    const testCode = localStorage.getItem('tracking_meta_test_code') || '';
     fetch('/api/meta-capi', {
       method: 'POST',
       headers: {
@@ -390,6 +391,7 @@ export async function trackEvent(eventName, eventData = {}) {
       body: JSON.stringify({
         source: capiSource,
         timestamp: Date.now(),
+        test_event_code: testCode || undefined,
         purchase: dataLayerPushObject
       })
     })

@@ -130,25 +130,41 @@
           </div>
         </div>
 
-        <!-- Panel 4: GTM Tracking Configuration -->
+        <!-- Panel 4: GTM & CAPI Tracking Configuration -->
         <div class="dashboard-content-panel" id="panel-admin-tracking">
-          <h2 style="font-size:1.3rem; margin-bottom:var(--spacing-md); font-family:var(--font-sans); font-weight:600;">Google Tag Manager (GTM) Settings</h2>
-          <p class="text-muted" style="font-size:0.85rem; margin-bottom:var(--spacing-lg);">Configure dynamic injection of your GTM container script globally across all e-commerce pages without editing code.</p>
+          <h2 style="font-size:1.3rem; margin-bottom:var(--spacing-md); font-family:var(--font-sans); font-weight:600;">Tracking & Analytics Settings</h2>
+          <p class="text-muted" style="font-size:0.85rem; margin-bottom:var(--spacing-lg);">Configure script injection IDs and test event codes globally across your e-commerce pages without editing code.</p>
           
-          <form id="gtm-config-form" style="max-width:480px;">
-            <div class="form-group" style="display:flex; align-items:center; gap:var(--spacing-md); margin-bottom:var(--spacing-md);">
-              <input type="checkbox" id="gtm-enabled-checkbox" style="width:20px; height:20px; accent-color:var(--accent-gold); cursor:pointer;">
-              <label for="gtm-enabled-checkbox" style="font-weight:600; cursor:pointer; user-select:none; text-transform:none; letter-spacing:0.05em; font-size:0.85rem; color:var(--text-secondary);">Enable GTM Script Injection</label>
-            </div>
-            
-            <div class="form-group">
-              <label class="form-label" for="gtm-id-input">GTM Container ID</label>
-              <input type="text" class="form-input" id="gtm-id-input" placeholder="GTM-XXXXXX" pattern="[gG][tT][mM]-[a-zA-Z0-9]{4,10}">
-              <span class="text-muted" style="font-size:0.75rem; margin-top:4px; display:block;">Enter your standard Google Tag Manager ID (e.g., GTM-NK8X9SZ).</span>
-            </div>
-            
-            <button type="submit" class="btn btn-primary" style="margin-top:var(--spacing-sm);">Save Tracking Configuration</button>
-          </form>
+          <div class="flex flex-col gap-lg" style="max-width:480px;">
+            <form id="gtm-config-form">
+              <h3 style="font-size:1rem; font-family:var(--font-sans); font-weight:600; margin-bottom:var(--spacing-sm); color:var(--accent-gold);">Google Tag Manager (GTM)</h3>
+              <div class="form-group" style="display:flex; align-items:center; gap:var(--spacing-md); margin-bottom:var(--spacing-md);">
+                <input type="checkbox" id="gtm-enabled-checkbox" style="width:20px; height:20px; accent-color:var(--accent-gold); cursor:pointer;">
+                <label for="gtm-enabled-checkbox" style="font-weight:600; cursor:pointer; user-select:none; text-transform:none; letter-spacing:0.05em; font-size:0.85rem; color:var(--text-secondary);">Enable GTM Script Injection</label>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label" for="gtm-id-input">GTM Container ID</label>
+                <input type="text" class="form-input" id="gtm-id-input" placeholder="GTM-XXXXXX" pattern="[gG][tT][mM]-[a-zA-Z0-9]{4,10}">
+                <span class="text-muted" style="font-size:0.75rem; margin-top:4px; display:block;">Enter your standard Google Tag Manager ID (e.g., GTM-NK8X9SZ).</span>
+              </div>
+              
+              <button type="submit" class="btn btn-primary" style="margin-top:var(--spacing-sm);">Save GTM Configuration</button>
+            </form>
+
+            <hr style="border:0; border-top:1px solid var(--border-color); margin:var(--spacing-lg) 0;">
+
+            <form id="capi-config-form">
+              <h3 style="font-size:1rem; font-family:var(--font-sans); font-weight:600; margin-bottom:var(--spacing-sm); color:var(--accent-gold);">Meta Conversions API (CAPI)</h3>
+              <div class="form-group">
+                <label class="form-label" for="capi-test-code-input">Test Event Code</label>
+                <input type="text" class="form-input" id="capi-test-code-input" placeholder="TESTXXXXX" pattern="[tT][eE][sS][tT]\d{2,8}">
+                <span class="text-muted" style="font-size:0.75rem; margin-top:4px; display:block;">Enter the temporary test event code from Meta Events Manager (e.g., TEST92485) to debug server CAPI events. Leave empty for production.</span>
+              </div>
+              
+              <button type="submit" class="btn btn-primary" style="margin-top:var(--spacing-sm);">Save CAPI Configuration</button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
@@ -369,9 +385,11 @@
     function renderGtmConfig() {
       const enabled = localStorage.getItem('tracking_gtm_enabled') === 'true';
       const containerId = localStorage.getItem('tracking_gtm_container_id') || '';
+      const capiTestCode = localStorage.getItem('tracking_meta_test_code') || '';
       
       document.querySelector('#gtm-enabled-checkbox').checked = enabled;
       document.querySelector('#gtm-id-input').value = containerId;
+      document.querySelector('#capi-test-code-input').value = capiTestCode;
       
       document.querySelector('#gtm-config-form').addEventListener('submit', (e) => {
         e.preventDefault();
@@ -395,6 +413,24 @@
         setTimeout(() => {
           window.location.reload();
         }, 1000);
+      });
+
+      document.querySelector('#capi-config-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const newTestCode = document.querySelector('#capi-test-code-input').value.trim().toUpperCase();
+        
+        if (newTestCode && !newTestCode.startsWith('TEST')) {
+          window.dispatchEvent(new CustomEvent('show-toast', {
+            detail: { message: "Invalid test event code. Must start with TEST", type: 'error' }
+          }));
+          return;
+        }
+        
+        localStorage.setItem('tracking_meta_test_code', newTestCode);
+        
+        window.dispatchEvent(new CustomEvent('show-toast', {
+          detail: { message: "Meta CAPI test code configuration saved successfully!", type: 'success' }
+        }));
       });
     }
   </script>

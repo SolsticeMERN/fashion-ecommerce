@@ -101,7 +101,7 @@ export default async function handler(req, res) {
           custom_data: customData
         }
       ],
-      test_event_code: 'TEST92485'
+      test_event_code: body.test_event_code || undefined
     };
 
     console.log('Payload sent to Meta Graph API (Hashed PII):', JSON.stringify(payload, null, 2));
