@@ -1,8 +1,8 @@
-import{A as o,p as l,f as d,j as c,t as p,b as h,k as u,P as m}from"./main-Bc3VQrLm.js";document.addEventListener("DOMContentLoaded",()=>{r(),window.addEventListener("wishlist-updated",()=>{r()})});function r(){const a=o(),e=document.querySelector("#empty-wishlist-layout"),i=document.querySelector("#wishlist-grid-container");if(a.length===0){e.style.display="block",i.style.display="none";return}e.style.display="none",i.style.display="grid";const s=a.map(t=>l(t)).filter(Boolean);i.innerHTML=s.map(t=>{const n=t.salePrice!==void 0;return`
+import{A as l,p as o,f as d,j as c,t as p,b as h,k as u,P as g}from"./main-gtee8xAa.js";document.addEventListener("DOMContentLoaded",()=>{r(),window.addEventListener("wishlist-updated",()=>{r()})});function r(){const a=l(),e=document.querySelector("#empty-wishlist-layout"),i=document.querySelector("#wishlist-grid-container");if(a.length===0){e.style.display="block",i.style.display="none";return}e.style.display="none",i.style.display="grid";const s=a.map(t=>o(t)).filter(Boolean);i.innerHTML=s.map(t=>{const n=t.salePrice!==void 0;return`
           <div class="product-card" data-id="${t.id}">
             <div class="product-image-container">
               ${n?'<span class="badge badge-sale product-badge">Sale</span>':""}
-              <a href="product.html?id=${t.id}">
+              <a href="${generateProductUrl(t.id,t.title)}">
                 <img class="product-img" src="${t.images[0]}" alt="${t.title}">
               </a>
               <button class="wishlist-btn-icon active" data-id="${t.id}" title="Remove from Wishlist">
@@ -17,7 +17,7 @@ import{A as o,p as l,f as d,j as c,t as p,b as h,k as u,P as m}from"./main-Bc3VQ
             
             <div class="product-info">
               <span class="product-cat">${t.category}</span>
-              <a href="product.html?id=${t.id}">
+              <a href="${generateProductUrl(t.id,t.title)}">
                 <h3 class="product-name">${t.title}</h3>
               </a>
               <div class="product-rating">
@@ -29,4 +29,4 @@ import{A as o,p as l,f as d,j as c,t as p,b as h,k as u,P as m}from"./main-Bc3VQ
               </div>
             </div>
           </div>
-        `}).join(""),g()}function g(){const a=document.querySelector("#wishlist-grid-container");a.querySelectorAll(".wishlist-quick-add-btn").forEach(e=>{e.addEventListener("click",()=>{const i=parseInt(e.getAttribute("data-id")),s=c(i,1);s&&(window.dispatchEvent(new CustomEvent("show-toast",{detail:{message:`Added "${s.title}" to cart from wishlist.`,type:"success"}})),p("add_to_cart",{currency:"USD",value:s.price,items:h([s])}))})}),a.querySelectorAll(".wishlist-btn-icon").forEach(e=>{e.addEventListener("click",()=>{const i=parseInt(e.getAttribute("data-id")),s=u(i),t=m.find(n=>n.id===i);s||window.dispatchEvent(new CustomEvent("show-toast",{detail:{message:`Removed "${t.title}" from wishlist.`,type:"info"}}))})})}
+        `}).join(""),m()}function m(){const a=document.querySelector("#wishlist-grid-container");a.querySelectorAll(".wishlist-quick-add-btn").forEach(e=>{e.addEventListener("click",()=>{const i=parseInt(e.getAttribute("data-id")),s=c(i,1);s&&(window.dispatchEvent(new CustomEvent("show-toast",{detail:{message:`Added "${s.title}" to cart from wishlist.`,type:"success"}})),p("add_to_cart",{currency:"USD",value:s.price,items:h([s])}))})}),a.querySelectorAll(".wishlist-btn-icon").forEach(e=>{e.addEventListener("click",()=>{const i=parseInt(e.getAttribute("data-id")),s=u(i),t=g.find(n=>n.id===i);s||window.dispatchEvent(new CustomEvent("show-toast",{detail:{message:`Removed "${t.title}" from wishlist.`,type:"info"}}))})})}

@@ -270,7 +270,7 @@
           <div class="product-card" data-id="${product.id}">
             <div class="product-image-container">
               ${hasSale ? `<span class="badge badge-sale product-badge">Sale</span>` : ''}
-              <a href="product.html?id=${product.id}" class="product-link" data-id="${product.id}">
+              <a href="${generateProductUrl(product.id, product.title)}" class="product-link" data-id="${product.id}">
                 <img class="product-img" src="${product.images[0]}" alt="${product.title}">
               </a>
               <button class="wishlist-btn-icon ${isWish ? 'active' : ''}" data-id="${product.id}" title="${isWish ? 'Remove from Wishlist' : 'Add to Wishlist'}">
@@ -285,7 +285,7 @@
             
             <div class="product-info">
               <span class="product-cat">${product.category}</span>
-              <a href="product.html?id=${product.id}" class="product-link" data-id="${product.id}">
+              <a href="${generateProductUrl(product.id, product.title)}" class="product-link" data-id="${product.id}">
                 <h3 class="product-name">${product.title}</h3>
               </a>
               <div class="product-rating">

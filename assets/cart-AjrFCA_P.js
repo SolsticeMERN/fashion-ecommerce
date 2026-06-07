@@ -1,9 +1,9 @@
-import{g as d,a as y,t as i,b as l,f as r,c as v,u as m,r as f,d as g}from"./main-Bc3VQrLm.js";document.addEventListener("DOMContentLoaded",()=>{u(),C();const o=d();if(o.length>0){const e=y();i("view_cart",{currency:"USD",value:e.subtotal,items:l(o)})}});function u(){const o=d(),e=document.querySelector("#empty-cart-layout"),s=document.querySelector("#active-cart-layout");if(o.length===0){e&&(e.style.display="block"),s&&(s.style.display="none");return}e&&(e.style.display="none"),s&&(s.style.display="grid");const n=document.querySelector("#cart-items-container");n.innerHTML=o.map(t=>`
+import{g as d,a as y,t as i,b as l,f as r,c as v,u as m,r as f,d as g}from"./main-gtee8xAa.js";document.addEventListener("DOMContentLoaded",()=>{u(),C();const o=d();if(o.length>0){const e=y();i("view_cart",{currency:"USD",value:e.subtotal,items:l(o)})}});function u(){const o=d(),e=document.querySelector("#empty-cart-layout"),s=document.querySelector("#active-cart-layout");if(o.length===0){e&&(e.style.display="block"),s&&(s.style.display="none");return}e&&(e.style.display="none"),s&&(s.style.display="grid");const n=document.querySelector("#cart-items-container");n.innerHTML=o.map(t=>`
         <div class="cart-row" data-id="${t.id}" data-color="${t.color}" data-size="${t.size}">
           <div class="cart-product-cell">
             <img class="cart-product-img" src="${t.image}" alt="${t.title}">
             <div class="cart-product-info">
-              <a href="product.html?id=${t.id}" class="cart-product-name" style="font-weight:600;">${t.title}</a>
+              <a href="${generateProductUrl(t.id,t.title)}" class="cart-product-name" style="font-weight:600;">${t.title}</a>
               <span class="cart-product-meta">Color: ${t.color} | Size: ${t.size}</span>
             </div>
           </div>
