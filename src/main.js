@@ -13,6 +13,13 @@ import './components/analytics-debugger.js';
 import { initTracking, trackEvent } from './js/tracking.js';
 import { GTM_CONFIG } from '../gtm-config.js';
 
+// Expose global product URL builder for SEO friendly query parameters
+window.generateProductUrl = function(id, title) {
+  if (!title) return `product.html?id=${id}`;
+  const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  return `product.html?id=${id}&product=${slug}`;
+};
+
 // Auto-inject Google Tag Manager (GTM) Container
 (function() {
   const localEnabled = localStorage.getItem('tracking_gtm_enabled');

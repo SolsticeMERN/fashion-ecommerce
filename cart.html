@@ -138,7 +138,7 @@
           <div class="cart-product-cell">
             <img class="cart-product-img" src="${item.image}" alt="${item.title}">
             <div class="cart-product-info">
-              <a href="product.html?id=${item.id}" class="cart-product-name" style="font-weight:600;">${item.title}</a>
+              <a href="${generateProductUrl(item.id, item.title)}" class="cart-product-name" style="font-weight:600;">${item.title}</a>
               <span class="cart-product-meta">Color: ${item.color} | Size: ${item.size}</span>
             </div>
           </div>
